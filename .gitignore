@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# ML training artifacts (regenerated via training/ scripts)
+models/artifacts/
+
+# Frontend build/deps (frontend/ has its own .gitignore for these too)
+frontend/node_modules/
+frontend/.next/

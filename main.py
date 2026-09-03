@@ -8,12 +8,10 @@ Powers OdinAI reasoning, Terra Graph API visual telemetry,
 longitudinal bio-age forecasting, and behavioral retention optimization.
 """
 
-import os
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import HTMLResponse
 from datetime import datetime
 
 from config import APP_NAME, APP_VERSION, APP_DESCRIPTION, PERSONAS
@@ -52,7 +50,7 @@ app = FastAPI(
 # CORS Middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -65,19 +63,22 @@ app.include_router(health_router)
 app.include_router(reward_router)
 app.include_router(webhook_router)
 
-# Mount Static Assets
-static_dir = os.path.join(os.path.dirname(__file__), "static")
-if os.path.exists(static_dir):
-    app.mount("/static", StaticFiles(directory=static_dir), name="static")
-
-
 @app.get("/", response_class=HTMLResponse)
-async def serve_dashboard():
-    """Serve the interactive Terra Intelligence Engine web dashboard."""
-    index_path = os.path.join(static_dir, "index.html")
-    if os.path.exists(index_path):
-        return FileResponse(index_path)
-    return HTMLResponse("<h1>Terra Intelligence Engine API running. Visit /docs for Swagger UI.</h1>")
+async def api_root():
+    """
+    API root. The interactive dashboard now lives in the Next.js frontend
+    (see frontend/ - run `pnpm dev` and visit http://localhost:3000). The
+    original zero-build static dashboard is archived under
+    archive/legacy-static-dashboard/ for reference.
+    """
+    return HTMLResponse(
+        "<h1>TERRA Intelligence Engine API</h1>"
+        "<p>Backend is running. The dashboard now lives in the Next.js frontend — "
+        "run <code>pnpm dev</code> in <code>frontend/</code> and visit "
+        "<a href=\"http://localhost:3000\">http://localhost:3000</a>.</p>"
+        "<p>Explore the API directly via <a href=\"/docs\">Swagger UI</a> or "
+        "<a href=\"/redoc\">ReDoc</a>.</p>"
+    )
 
 
 @app.get("/health")

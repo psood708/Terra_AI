@@ -48,7 +48,7 @@ async def test_llm_connection(request: TestConnectionRequest):
     """
     return await odin_engine.test_api_connection(
         api_key=request.api_key,
-        provider=request.provider or "gemini"
+        provider=request.provider or "huggingface"
     )
 
 

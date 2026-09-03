@@ -178,7 +178,7 @@ The server will start at `http://localhost:8000`:
 pytest tests/ -v
 ```
 
-All 11 unit tests execute in $< 0.3$ seconds with 100% pass rate.
+All 13 unit tests execute in $< 1$ second with 100% pass rate.
 
 ---
 
@@ -338,7 +338,7 @@ Terra_API/
 │   └── style.css           # Glassmorphic touches and custom scrollbars
 ├── tests/                   # Automated Pytest Suite
 │   ├── __init__.py
-│   └── test_tie_endpoints.py # 11 end-to-end integration tests
+│   └── test_tie_endpoints.py # 13 end-to-end integration tests
 ├── config.py                # Configuration and clinical biomarker benchmarks
 ├── main.py                  # Server entry point & static mount
 ├── requirements.txt         # Pinned production dependencies

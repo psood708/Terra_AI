@@ -22,7 +22,7 @@ def test_health_check():
 
 
 def test_dashboard_root():
-    """Verify root endpoint serves interactive HTML dashboard."""
+    """Verify root endpoint serves an HTML API landing page pointing to the Next.js frontend."""
     response = client.get("/")
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
