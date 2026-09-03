@@ -110,7 +110,8 @@ To demonstrate how the platform adapts across the full spectrum of extreme perso
 
 ### 1. OdinAI Health Intelligence Engine (`models/odin_ai.py`)
 
-- **Active Real-Time LLM Integration**: Dynamically injects live multi-sensor wearable telemetry (HRV $z$-scores, CGM readings, sleep stages, active alerts) into **Google Gemini** or **OpenAI** system prompts for real-time generative clinical intelligence.
+- **Active Real-Time LLM Integration**: Connects via **Hugging Face Serverless Inference Router** (using open weights models like `meta-llama/Llama-3.2-3B-Instruct` or `Qwen/Qwen2.5-72B-Instruct`), **Google Gemini** (`gemini-3.6-flash`), or **OpenAI** (`gpt-4o-mini`).
+- **Zero-Deprecation Reliability**: Uses Hugging Face's standard OpenAI-compatible chat router (`router.huggingface.co/hf-inference/v1/chat/completions`) with free User Access Tokens (`hf_...`).
 - **Autonomic Synthesis**: Calculates real-time recovery scores using individual baseline HRV standard deviation ($z$-score), resting heart rate shift, and sleep architecture efficiency.
 - **Biometric Anomaly Detection**:
   - _Autonomic Crash_: Flags acute drops $>1.5$ SD in HRV.

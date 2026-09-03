@@ -1,8 +1,7 @@
 """
 OdinAI Health Intelligence Engine.
 Autonomous physiological reasoning, biometric anomaly detection,
-adaptive workout planning, and active real-time LLM integration (Gemini / OpenAI).
-Prioritizes Google's recommended gemini-3.6-flash text generation model.
+adaptive workout planning, and active real-time LLM integration (Hugging Face / Gemini / OpenAI).
 """
 
 import os
@@ -46,7 +45,14 @@ SCIENTIFIC_CITATIONS = {
     }
 }
 
-# Strict whitelist of verified text-generating models (prioritizing gemini-3.6-flash)
+# Supported free models on Hugging Face Serverless Router
+HF_MODELS = [
+    "meta-llama/Llama-3.2-3B-Instruct",
+    "Qwen/Qwen2.5-72B-Instruct",
+    "mistralai/Mistral-7B-Instruct-v0.3"
+]
+
+# Strict whitelist of verified Gemini text models
 VERIFIED_GEMINI_TEXT_MODELS = [
     "gemini-3.6-flash",
     "gemini-3.6",
@@ -58,21 +64,9 @@ VERIFIED_GEMINI_TEXT_MODELS = [
     "gemini-1.5-flash-8b"
 ]
 
-# Blacklist substrings for non-text, experimental, image, or deprecated models
 EXCLUDED_MODEL_PATTERNS = [
-    "high-res",
-    "exp",
-    "preview",
-    "embedding",
-    "image",
-    "imagen",
-    "vision",
-    "aqa",
-    "audio",
-    "whisper",
-    "video",
-    "gemini-pro",       # Deprecated in v1beta
-    "gemini-2.0-flash"  # Explicitly deprecated by Google in favor of gemini-3.6-flash
+    "high-res", "exp", "preview", "embedding", "image", "imagen", "vision",
+    "aqa", "audio", "whisper", "video", "gemini-pro", "gemini-2.0-flash"
 ]
 
 
@@ -81,6 +75,7 @@ class OdinAIEngine:
 
     def __init__(self):
         self.citations = SCIENTIFIC_CITATIONS
+        self.cached_hf_model: Optional[str] = "meta-llama/Llama-3.2-3B-Instruct"
         self.cached_gemini_model: Optional[str] = "gemini-3.6-flash"
 
     def analyze_recovery_status(self, profile: UnifiedHealthProfile) -> Dict[str, Any]:
@@ -264,16 +259,55 @@ class OdinAIEngine:
 
     # ============ ACTIVE REAL-TIME LLM INTEGRATION ============
 
-    async def test_api_connection(self, api_key: str, provider: str = "gemini") -> Dict[str, Any]:
-        """Test API key connection to Gemini or OpenAI with gemini-3.6-flash priority."""
+    async def test_api_connection(self, api_key: str, provider: str = "huggingface") -> Dict[str, Any]:
+        """Test API key connection to Hugging Face, Gemini, or OpenAI."""
         key = api_key.strip().strip("'\"")
         if not key:
-            return {"success": False, "error": "API key is empty."}
+            return {"success": False, "error": "API key is empty. Please enter your API token."}
 
         start_time = time.time()
         try:
-            async with httpx.AsyncClient(timeout=12.0) as client:
-                if provider.lower() == "openai" or key.startswith("sk-"):
+            async with httpx.AsyncClient(timeout=15.0) as client:
+                
+                # ---------------- 1. HUGGING FACE (RECOMMENDED) ----------------
+                if provider.lower() == "huggingface" or key.startswith("hf_"):
+                    url = "https://router.huggingface.co/hf-inference/v1/chat/completions"
+                    headers = {
+                        "Authorization": f"Bearer {key}",
+                        "Content-Type": "application/json"
+                    }
+                    last_err = ""
+                    for hf_model in HF_MODELS:
+                        payload = {
+                            "model": hf_model,
+                            "messages": [{"role": "user", "content": "Respond with 'ready'"}],
+                            "max_tokens": 10
+                        }
+                        resp = await client.post(url, headers=headers, json=payload, timeout=12.0)
+                        latency = int((time.time() - start_time) * 1000)
+
+                        if resp.status_code == 200:
+                            self.cached_hf_model = hf_model
+                            return {
+                                "success": True,
+                                "provider": "Hugging Face",
+                                "model": hf_model,
+                                "latency_ms": latency
+                            }
+                        elif resp.status_code in [401, 403]:
+                            return {
+                                "success": False,
+                                "provider": "Hugging Face",
+                                "status_code": resp.status_code,
+                                "error": "Invalid Hugging Face Token. Please get a free User Access Token from huggingface.co/settings/tokens"
+                            }
+                        else:
+                            last_err = f"{hf_model} HTTP {resp.status_code}: {resp.text[:150]}"
+
+                    return {"success": False, "provider": "Hugging Face", "error": last_err or "Failed to connect to Hugging Face"}
+
+                # ---------------- 2. OPENAI ----------------
+                elif provider.lower() == "openai" or key.startswith("sk-"):
                     headers = {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
                     payload = {
                         "model": "gpt-4o-mini",
@@ -287,8 +321,9 @@ class OdinAIEngine:
                     else:
                         err_json = resp.json() if "application/json" in resp.headers.get("content-type", "") else {"error": resp.text}
                         return {"success": False, "status_code": resp.status_code, "error": err_json.get("error", {}).get("message", resp.text)}
+
+                # ---------------- 3. GOOGLE GEMINI ----------------
                 else:
-                    # 1. Query Google Generative Language v1beta/models to find active models
                     list_url = f"https://generativelanguage.googleapis.com/v1beta/models?key={key}"
                     list_resp = await client.get(list_url, timeout=8.0)
 
@@ -300,15 +335,12 @@ class OdinAIEngine:
                             if "generateContent" in methods:
                                 name = m.get("name", "").replace("models/", "").strip()
                                 nl = name.lower()
-                                # Discard embeddings, audio, vision, and deprecated models
                                 if any(bad in nl for bad in EXCLUDED_MODEL_PATTERNS):
                                     continue
-                                # Accept any recognized text model or standard gemini model
                                 if any(good in nl for good in VERIFIED_GEMINI_TEXT_MODELS) or "gemini" in nl:
                                     if name not in available_models:
                                         available_models.append(name)
                     else:
-                        # Report invalid key error directly
                         try:
                             msg = list_resp.json().get("error", {}).get("message")
                         except Exception:
@@ -321,32 +353,23 @@ class OdinAIEngine:
                                 "error": f"Google Gemini Error (HTTP {list_resp.status_code}): {msg}"
                             }
 
-                    # Default fallback models prioritizing gemini-3.6-flash
                     if not available_models:
                         available_models = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-1.5-flash"]
 
-                    # Priority sort: gemini-3.6-flash > gemini-2.5-flash > others
                     def priority(n: str) -> int:
                         nl = n.lower()
-                        if "3.6-flash" in nl or "3.6" in nl:
-                            return 0
-                        if "2.5-flash" in nl or "2.5" in nl:
-                            return 1
-                        if "flash" in nl and "high-res" not in nl:
-                            return 2
-                        if "pro" in nl:
-                            return 3
+                        if "3.6-flash" in nl or "3.6" in nl: return 0
+                        if "2.5-flash" in nl or "2.5" in nl: return 1
+                        if "flash" in nl and "high-res" not in nl: return 2
+                        if "pro" in nl: return 3
                         return 10
 
                     available_models.sort(key=priority)
 
-                    # 2. Test generateContent using strictly v1beta
                     errors = []
                     for model in available_models:
                         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
-                        payload = {
-                            "contents": [{"parts": [{"text": "Hello"}]}]
-                        }
+                        payload = {"contents": [{"parts": [{"text": "Hello"}]}]}
                         resp = await client.post(url, json=payload, timeout=10.0)
                         latency = int((time.time() - start_time) * 1000)
 
@@ -366,6 +389,7 @@ class OdinAIEngine:
                             errors.append(f"{model}: {err_msg}")
 
                     return {"success": False, "provider": "Google Gemini", "error": " | ".join(errors) or "Failed to call generateContent"}
+
         except Exception as e:
             return {"success": False, "error": str(e)}
 
@@ -374,7 +398,7 @@ class OdinAIEngine:
         query_text: str,
         profile: UnifiedHealthProfile,
         api_key: Optional[str] = None,
-        provider: str = "gemini"
+        provider: str = "huggingface"
     ) -> Tuple[Optional[str], Optional[str], Optional[str]]:
         """
         Call live generative AI using user's real multi-stream telemetry.
@@ -382,6 +406,8 @@ class OdinAIEngine:
         """
         key = (
             (api_key or "").strip().strip("'\"") or
+            os.getenv("HUGGINGFACE_API_KEY", "").strip().strip("'\"") or
+            os.getenv("HF_TOKEN", "").strip().strip("'\"") or
             os.getenv("GEMINI_API_KEY", "").strip().strip("'\"") or
             os.getenv("OPENAI_API_KEY", "").strip().strip("'\"") or
             os.getenv("LLM_API_KEY", "").strip().strip("'\"")
@@ -423,8 +449,40 @@ class OdinAIEngine:
         )
 
         try:
-            async with httpx.AsyncClient(timeout=20.0) as client:
-                if provider.lower() == "openai" or key.startswith("sk-"):
+            async with httpx.AsyncClient(timeout=25.0) as client:
+                
+                # ---------------- 1. HUGGING FACE ----------------
+                if provider.lower() == "huggingface" or key.startswith("hf_"):
+                    url = "https://router.huggingface.co/hf-inference/v1/chat/completions"
+                    headers = {
+                        "Authorization": f"Bearer {key}",
+                        "Content-Type": "application/json"
+                    }
+                    models = [self.cached_hf_model or "meta-llama/Llama-3.2-3B-Instruct", "Qwen/Qwen2.5-72B-Instruct"]
+                    last_err = ""
+                    for hf_model in models:
+                        payload = {
+                            "model": hf_model,
+                            "messages": [
+                                {"role": "system", "content": system_instruction},
+                                {"role": "user", "content": query_text}
+                            ],
+                            "temperature": 0.7,
+                            "max_tokens": 600
+                        }
+                        resp = await client.post(url, headers=headers, json=payload)
+                        if resp.status_code == 200:
+                            data = resp.json()
+                            content = data["choices"][0]["message"]["content"].strip()
+                            self.cached_hf_model = hf_model
+                            return content, hf_model.split("/")[-1], None
+                        else:
+                            last_err = f"HF {hf_model} HTTP {resp.status_code}: {resp.text[:150]}"
+
+                    return None, None, last_err
+
+                # ---------------- 2. OPENAI ----------------
+                elif provider.lower() == "openai" or key.startswith("sk-"):
                     headers = {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
                     payload = {
                         "model": "gpt-4o-mini",
@@ -442,8 +500,9 @@ class OdinAIEngine:
                     else:
                         err_msg = f"OpenAI HTTP {resp.status_code}: {resp.text[:200]}"
                         return None, None, err_msg
+
+                # ---------------- 3. GOOGLE GEMINI ----------------
                 else:
-                    # Google Gemini Text Generation (v1beta)
                     combined_prompt = f"{system_instruction}\n\nUser Question: {query_text}"
                     payload = {
                         "contents": [{"parts": [{"text": combined_prompt}]}],
@@ -478,7 +537,7 @@ class OdinAIEngine:
         query_text: str,
         profile: UnifiedHealthProfile,
         api_key: Optional[str] = None,
-        provider: str = "gemini"
+        provider: str = "huggingface"
     ) -> Dict[str, Any]:
         """
         Process query using Active Live LLM if key is available,

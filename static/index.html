@@ -650,15 +650,18 @@
         <div>
           <label class="block text-gray-300 card-sub font-medium mb-1">AI Provider:</label>
           <select id="aiProviderSelect" class="w-full bg-gray-900 border border-gray-800 rounded-lg p-2 text-xs text-white input-themed focus:outline-none focus:border-emerald-500">
-            <option value="gemini" selected>Google Gemini (Recommended - Free Tier Available)</option>
+            <option value="huggingface" selected>Hugging Face (Recommended - Free Serverless Token)</option>
+            <option value="gemini">Google Gemini (gemini-3.6-flash)</option>
             <option value="openai">OpenAI (GPT-4o-mini / GPT-4o)</option>
           </select>
         </div>
 
         <div>
-          <label class="block text-gray-300 card-sub font-medium mb-1">API Key:</label>
-          <input id="aiApiKeyInput" type="password" placeholder="Enter AIzaSy... or sk-..." class="w-full bg-gray-900 border border-gray-800 rounded-lg p-2 text-xs text-white input-themed focus:outline-none focus:border-emerald-500" />
-          <p class="text-[10px] text-gray-400 card-muted mt-1">Stored securely in your browser's local storage.</p>
+          <label class="block text-gray-300 card-sub font-medium mb-1">API Token / Key:</label>
+          <input id="aiApiKeyInput" type="password" placeholder="Enter hf_... (Free at huggingface.co/settings/tokens)" class="w-full bg-gray-900 border border-gray-800 rounded-lg p-2 text-xs text-white input-themed focus:outline-none focus:border-emerald-500" />
+          <p class="text-[10px] text-gray-400 card-muted mt-1" id="aiTokenHint">
+            Get a free User Access Token at <a href="https://huggingface.co/settings/tokens" target="_blank" class="text-emerald-400 underline">huggingface.co/settings/tokens</a>. Powers Llama-3.2-3B-Instruct.
+          </p>
         </div>
 
         <div class="bg-gray-900/60 inner-card border border-gray-800/80 rounded-xl p-3 text-[11px] text-gray-400 card-muted leading-relaxed">

@@ -99,7 +99,10 @@ function updateAiStatusBadge() {
   const activeTag = document.getElementById('activeAiModelTag');
   
   if (activeApiKey && activeApiKey.trim()) {
-    const provName = activeProvider === 'openai' ? 'GPT-4o' : 'Gemini';
+    let provName = 'Hugging Face';
+    if (activeProvider === 'gemini') provName = 'Gemini';
+    else if (activeProvider === 'openai') provName = 'GPT-4o';
+    
     if (statusLabel) statusLabel.textContent = `AI: ${provName}`;
     if (activeTag) activeTag.textContent = `Active AI: ${provName}`;
   } else {
@@ -108,9 +111,27 @@ function updateAiStatusBadge() {
   }
 }
 
+function updateProviderInputs() {
+  const provider = document.getElementById('aiProviderSelect').value;
+  const input = document.getElementById('aiApiKeyInput');
+  const hint = document.getElementById('aiTokenHint');
+
+  if (provider === 'huggingface') {
+    input.placeholder = 'Enter hf_... (Free at huggingface.co/settings/tokens)';
+    if (hint) hint.innerHTML = 'Get a free User Access Token at <a href="https://huggingface.co/settings/tokens" target="_blank" class="text-emerald-400 underline">huggingface.co/settings/tokens</a>. Powers Llama-3.2-3B-Instruct.';
+  } else if (provider === 'gemini') {
+    input.placeholder = 'Enter AIzaSy... from Google AI Studio';
+    if (hint) hint.innerHTML = 'Google Gemini API key. Powers gemini-3.6-flash and gemini-2.5-flash.';
+  } else {
+    input.placeholder = 'Enter sk-... from OpenAI Platform';
+    if (hint) hint.innerHTML = 'OpenAI API key. Powers GPT-4o-mini and GPT-4o.';
+  }
+}
+
 function openAiModal() {
   document.getElementById('aiProviderSelect').value = activeProvider;
   document.getElementById('aiApiKeyInput').value = activeApiKey;
+  updateProviderInputs();
   const resultDiv = document.getElementById('aiTestResult');
   if (resultDiv) {
     resultDiv.classList.add('hidden');
@@ -130,12 +151,16 @@ async function testAiConnection() {
 
   if (!key) {
     resultDiv.className = 'text-[11px] rounded-lg p-2.5 bg-rose-500/10 border border-rose-500/30 text-rose-400 block';
-    resultDiv.innerHTML = '<i class="fa-solid fa-circle-exclamation mr-1.5"></i> Please enter an API key first.';
+    resultDiv.innerHTML = '<i class="fa-solid fa-circle-exclamation mr-1.5"></i> Please enter an API token first.';
     return;
   }
 
+  let providerLabel = 'Hugging Face';
+  if (provider === 'gemini') providerLabel = 'Google Gemini';
+  else if (provider === 'openai') providerLabel = 'OpenAI';
+
   resultDiv.className = 'text-[11px] rounded-lg p-2.5 bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 block';
-  resultDiv.innerHTML = '<i class="fa-solid fa-spinner animate-spin mr-1.5"></i> Pinging ' + (provider === 'openai' ? 'OpenAI' : 'Google Gemini') + ' API...';
+  resultDiv.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1.5"></i> Testing connection to ${providerLabel}...`;
 
   try {
     const res = await fetch('/api/odin/test-connection', {
@@ -150,7 +175,7 @@ async function testAiConnection() {
       resultDiv.innerHTML = `<i class="fa-solid fa-check mr-1.5"></i> <strong>Connected!</strong> Model: <code>${data.model}</code> • Latency: ${data.latency_ms}ms`;
     } else {
       resultDiv.className = 'text-[11px] rounded-lg p-2.5 bg-rose-500/10 border border-rose-500/30 text-rose-400 block';
-      resultDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1.5"></i> <strong>Connection Failed:</strong> ${data.error || 'Invalid API Key'}`;
+      resultDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1.5"></i> <strong>Connection Failed:</strong> ${data.error || 'Check API Token'}`;
     }
   } catch (err) {
     resultDiv.className = 'text-[11px] rounded-lg p-2.5 bg-rose-500/10 border border-rose-500/30 text-rose-400 block';
@@ -902,6 +927,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (openAiBtn) openAiBtn.addEventListener('click', openAiModal);
 
   document.getElementById('closeAiModalBtn').addEventListener('click', closeAiModal);
+  document.getElementById('aiProviderSelect').addEventListener('change', updateProviderInputs);
   document.getElementById('testAiKeyBtn').addEventListener('click', testAiConnection);
   document.getElementById('saveAiKeyBtn').addEventListener('click', saveAiKey);
   document.getElementById('clearAiKeyBtn').addEventListener('click', clearAiKey);

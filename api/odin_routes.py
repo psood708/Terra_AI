@@ -15,20 +15,20 @@ odin_engine = OdinAIEngine()
 class OdinQueryRequest(BaseModel):
     persona_id: str = Field(..., json_schema_extra={"example": "alex_longevity"})
     query: str = Field(..., json_schema_extra={"example": "Why is my recovery score at this level today and should I do heavy intervals?"})
-    api_key: Optional[str] = Field(None, json_schema_extra={"example": "AIzaSy... or sk-..."}, description="Optional user Gemini or OpenAI API key")
-    provider: Optional[str] = Field("gemini", json_schema_extra={"example": "gemini"}, description="LLM provider: gemini or openai")
+    api_key: Optional[str] = Field(None, json_schema_extra={"example": "hf_... or AIzaSy... or sk-..."}, description="Optional user Hugging Face, Gemini, or OpenAI API key")
+    provider: Optional[str] = Field("huggingface", json_schema_extra={"example": "huggingface"}, description="LLM provider: huggingface, gemini, or openai")
 
 
 class TestConnectionRequest(BaseModel):
-    api_key: str = Field(..., json_schema_extra={"example": "AIzaSy..."})
-    provider: Optional[str] = Field("gemini", json_schema_extra={"example": "gemini"})
+    api_key: str = Field(..., json_schema_extra={"example": "hf_..."})
+    provider: Optional[str] = Field("huggingface", json_schema_extra={"example": "huggingface"})
 
 
 @router.post("/query")
 async def ask_odin(request: OdinQueryRequest):
     """
     Query OdinAI health companion.
-    Uses active generative AI (Gemini / OpenAI) when an API key is provided,
+    Uses active generative AI (Hugging Face / Gemini / OpenAI) when an API key is provided,
     otherwise uses the built-in physiological reasoning engine.
     """
     profile = generate_unified_profile(request.persona_id)
@@ -36,7 +36,7 @@ async def ask_odin(request: OdinQueryRequest):
         query_text=request.query,
         profile=profile,
         api_key=request.api_key,
-        provider=request.provider or "gemini"
+        provider=request.provider or "huggingface"
     )
 
 
