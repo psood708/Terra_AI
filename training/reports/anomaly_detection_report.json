@@ -1,0 +1,130 @@
+[
+  {
+    "persona_id": "alex_longevity",
+    "num_days_simulated": 240,
+    "num_injected_events": 6,
+    "legacy_fixed_threshold": {
+      "event_level_recall": 0.5,
+      "day_level_precision": 1.0,
+      "day_level_recall": 0.143,
+      "day_level_f1": 0.25,
+      "false_positives_per_30_days": 0.0,
+      "num_events": 6,
+      "num_scored_days": 240
+    },
+    "mad_control_chart": {
+      "event_level_recall": 0.833,
+      "day_level_precision": 0.682,
+      "day_level_recall": 0.429,
+      "day_level_f1": 0.526,
+      "false_positives_per_30_days": 0.93,
+      "num_events": 6,
+      "num_scored_days": 226
+    },
+    "mad_plus_isolation_forest": {
+      "event_level_recall": 0.833,
+      "day_level_precision": 0.633,
+      "day_level_recall": 0.543,
+      "day_level_f1": 0.585,
+      "false_positives_per_30_days": 1.46,
+      "num_events": 6,
+      "num_scored_days": 226
+    }
+  },
+  {
+    "persona_id": "sarah_athlete",
+    "num_days_simulated": 240,
+    "num_injected_events": 3,
+    "legacy_fixed_threshold": {
+      "event_level_recall": 1.0,
+      "day_level_precision": 1.0,
+      "day_level_recall": 0.391,
+      "day_level_f1": 0.562,
+      "false_positives_per_30_days": 0.0,
+      "num_events": 3,
+      "num_scored_days": 240
+    },
+    "mad_control_chart": {
+      "event_level_recall": 1.0,
+      "day_level_precision": 0.571,
+      "day_level_recall": 0.522,
+      "day_level_f1": 0.545,
+      "false_positives_per_30_days": 1.19,
+      "num_events": 3,
+      "num_scored_days": 226
+    },
+    "mad_plus_isolation_forest": {
+      "event_level_recall": 1.0,
+      "day_level_precision": 0.533,
+      "day_level_recall": 0.696,
+      "day_level_f1": 0.604,
+      "false_positives_per_30_days": 1.86,
+      "num_events": 3,
+      "num_scored_days": 226
+    }
+  },
+  {
+    "persona_id": "marcus_metabolic",
+    "num_days_simulated": 240,
+    "num_injected_events": 13,
+    "legacy_fixed_threshold": {
+      "event_level_recall": 0.538,
+      "day_level_precision": 1.0,
+      "day_level_recall": 0.221,
+      "day_level_f1": 0.362,
+      "false_positives_per_30_days": 0.0,
+      "num_events": 13,
+      "num_scored_days": 240
+    },
+    "mad_control_chart": {
+      "event_level_recall": 0.615,
+      "day_level_precision": 0.947,
+      "day_level_recall": 0.234,
+      "day_level_f1": 0.375,
+      "false_positives_per_30_days": 0.13,
+      "num_events": 13,
+      "num_scored_days": 226
+    },
+    "mad_plus_isolation_forest": {
+      "event_level_recall": 0.692,
+      "day_level_precision": 0.741,
+      "day_level_recall": 0.26,
+      "day_level_f1": 0.385,
+      "false_positives_per_30_days": 0.93,
+      "num_events": 13,
+      "num_scored_days": 226
+    }
+  },
+  {
+    "persona_id": "elena_cognitive",
+    "num_days_simulated": 240,
+    "num_injected_events": 8,
+    "legacy_fixed_threshold": {
+      "event_level_recall": 0.875,
+      "day_level_precision": 1.0,
+      "day_level_recall": 0.347,
+      "day_level_f1": 0.515,
+      "false_positives_per_30_days": 0.0,
+      "num_events": 8,
+      "num_scored_days": 240
+    },
+    "mad_control_chart": {
+      "event_level_recall": 0.625,
+      "day_level_precision": 0.556,
+      "day_level_recall": 0.238,
+      "day_level_f1": 0.333,
+      "false_positives_per_30_days": 1.06,
+      "num_events": 8,
+      "num_scored_days": 226
+    },
+    "mad_plus_isolation_forest": {
+      "event_level_recall": 0.75,
+      "day_level_precision": 0.56,
+      "day_level_recall": 0.333,
+      "day_level_f1": 0.418,
+      "false_positives_per_30_days": 1.46,
+      "num_events": 8,
+      "num_scored_days": 226
+    }
+  }
+]

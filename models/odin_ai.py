@@ -9,7 +9,8 @@ import time
 import httpx
 from typing import Dict, Any, List, Optional, Tuple
 from data.terra_schemas import UnifiedHealthProfile
-from config import PERSONAS, BIOMARKER_BENCHMARKS
+from config import PERSONAS
+from models.anomaly_detector import score_today
 
 
 SCIENTIFIC_CITATIONS = {
@@ -147,28 +148,70 @@ class OdinAIEngine:
         base_rhr = cfg["baseline"]["resting_hr"]
 
         current_hrv = profile.sleep.avg_hrv_rmssd_ms
-        if (base_hrv - current_hrv) >= 15.0:
-            anomalies.append({
-                "type": "AUTONOMIC_SUPPRESSION",
-                "severity": "high",
-                "metric": "HRV (rMSSD)",
-                "detected_value": f"{current_hrv} ms",
-                "baseline_value": f"{base_hrv} ms",
-                "message": "Acute autonomic depression detected. Parasympathetic brake is compromised.",
-                "actionable_fix": "Postpone glycolytic/high-intensity workouts. Implement 15 mins physiological sigh breathwork."
-            })
-
         current_rhr = profile.daily.resting_heart_rate_bpm
-        if (current_rhr - base_rhr) >= 5:
-            anomalies.append({
-                "type": "ELEVATED_BASAL_HEART_RATE",
-                "severity": "medium",
-                "metric": "Resting Heart Rate",
-                "detected_value": f"{current_rhr} bpm",
-                "baseline_value": f"{base_hrv} bpm",
-                "message": "Nocturnal heart rate elevated by +5 bpm. Potential early immune response or late caloric intake.",
-                "actionable_fix": "Ensure dinner is completed at least 3 hours before sleep; hydrate with electrolytes."
-            })
+
+        # Statistically-fit per-persona MAD control chart (see
+        # models/anomaly_detector.py, fit by training/train_anomaly_baselines.py)
+        # calibrated to each persona's own historical variance - replaces the
+        # flat 15ms HRV / 5bpm RHR margins previously applied identically to
+        # every persona regardless of how much that persona naturally
+        # fluctuates day to day (e.g. Marcus's low-variance HRV vs. Sarah's
+        # high-variance HRV got the same absolute threshold before this).
+        mad_scores = score_today(
+            profile.persona_id,
+            hrv_rmssd_ms=current_hrv,
+            resting_hr_bpm=current_rhr,
+            sleep_efficiency_pct=profile.sleep.sleep_efficiency_pct,
+        )
+
+        if mad_scores is not None:
+            hrv_result = mad_scores["hrv_rmssd_ms"]
+            if hrv_result["is_anomalous"] and current_hrv < hrv_result["baseline_median"]:
+                anomalies.append({
+                    "type": "AUTONOMIC_SUPPRESSION",
+                    "severity": "high",
+                    "metric": "HRV (rMSSD)",
+                    "detected_value": f"{current_hrv} ms",
+                    "baseline_value": f"{hrv_result['baseline_median']} ms (persona MAD baseline, z={hrv_result['modified_z_score']})",
+                    "message": "Acute autonomic depression detected. Parasympathetic brake is compromised.",
+                    "actionable_fix": "Postpone glycolytic/high-intensity workouts. Implement 15 mins physiological sigh breathwork."
+                })
+
+            rhr_result = mad_scores["resting_hr_bpm"]
+            if rhr_result["is_anomalous"] and current_rhr > rhr_result["baseline_median"]:
+                anomalies.append({
+                    "type": "ELEVATED_BASAL_HEART_RATE",
+                    "severity": "medium",
+                    "metric": "Resting Heart Rate",
+                    "detected_value": f"{current_rhr} bpm",
+                    "baseline_value": f"{rhr_result['baseline_median']} bpm (persona MAD baseline, z={rhr_result['modified_z_score']})",
+                    "message": "Nocturnal heart rate elevated relative to this persona's own historical baseline. Potential early immune response or late caloric intake.",
+                    "actionable_fix": "Ensure dinner is completed at least 3 hours before sleep; hydrate with electrolytes."
+                })
+        else:
+            # No trained baseline yet (run: python -m training.train_anomaly_baselines) -
+            # fall back to the original fixed-margin heuristic so this still
+            # works out of the box on a fresh clone.
+            if (base_hrv - current_hrv) >= 15.0:
+                anomalies.append({
+                    "type": "AUTONOMIC_SUPPRESSION",
+                    "severity": "high",
+                    "metric": "HRV (rMSSD)",
+                    "detected_value": f"{current_hrv} ms",
+                    "baseline_value": f"{base_hrv} ms",
+                    "message": "Acute autonomic depression detected. Parasympathetic brake is compromised.",
+                    "actionable_fix": "Postpone glycolytic/high-intensity workouts. Implement 15 mins physiological sigh breathwork."
+                })
+            if (current_rhr - base_rhr) >= 5:
+                anomalies.append({
+                    "type": "ELEVATED_BASAL_HEART_RATE",
+                    "severity": "medium",
+                    "metric": "Resting Heart Rate",
+                    "detected_value": f"{current_rhr} bpm",
+                    "baseline_value": f"{base_rhr} bpm",
+                    "message": "Nocturnal heart rate elevated by +5 bpm. Potential early immune response or late caloric intake.",
+                    "actionable_fix": "Ensure dinner is completed at least 3 hours before sleep; hydrate with electrolytes."
+                })
 
         cgm = profile.body.cgm_readings_24h or []
         max_glucose = max([g.glucose_mg_dl for g in cgm], default=0.0)

@@ -18,8 +18,12 @@ venv/
 .vscode/
 .idea/
 
-# ML training artifacts (regenerated via training/ scripts)
-models/artifacts/
+# ML training artifacts: keep small, human-readable JSON baselines tracked
+# (so the API works out of the box without a training step first), but
+# regenerate binary model artifacts via training/ scripts instead of
+# committing them.
+models/artifacts/isolation_forest/
+models/artifacts/*.joblib
 
 # Frontend build/deps (frontend/ has its own .gitignore for these too)
 frontend/node_modules/

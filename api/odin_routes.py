@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 from data.mock_generator import generate_unified_profile
 from models.odin_ai import OdinAIEngine
+from models.anomaly_detector import scan_persona_window
 
 router = APIRouter(prefix="/api/odin", tags=["OdinAI Intelligence"])
 odin_engine = OdinAIEngine()
@@ -73,6 +74,17 @@ async def get_active_anomalies(persona_id: str):
         "anomalies_count": len(anomalies),
         "anomalies": anomalies
     }
+
+
+@router.get("/anomalies/{persona_id}/scan")
+async def scan_anomaly_window(persona_id: str, days: int = 60):
+    """
+    Live demonstration of the full anomaly detector stack (MAD control
+    chart + secondary IsolationForest, see models/anomaly_detector.py) over
+    a simulated trailing window, including which days had a ground-truth
+    injected event so the detector's hits/misses are directly inspectable.
+    """
+    return scan_persona_window(persona_id, days=min(180, max(14, days)))
 
 
 @router.get("/adaptive-workout/{persona_id}")

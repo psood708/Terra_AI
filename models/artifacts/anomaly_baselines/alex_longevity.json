@@ -1,0 +1,14 @@
+{
+  "hrv_rmssd_ms": {
+    "median": 69.03,
+    "mad": 2.5749999999999957
+  },
+  "resting_hr_bpm": {
+    "median": 53.515,
+    "mad": 1.379999999999999
+  },
+  "sleep_efficiency_pct": {
+    "median": 93.025,
+    "mad": 1.9199999999999946
+  }
+}
