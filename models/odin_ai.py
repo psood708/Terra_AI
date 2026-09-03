@@ -2,6 +2,7 @@
 OdinAI Health Intelligence Engine.
 Autonomous physiological reasoning, biometric anomaly detection,
 adaptive workout planning, and active real-time LLM integration (Gemini / OpenAI).
+Prioritizes Google's recommended gemini-3.6-flash text generation model.
 """
 
 import os
@@ -45,12 +46,42 @@ SCIENTIFIC_CITATIONS = {
     }
 }
 
+# Strict whitelist of verified text-generating models (prioritizing gemini-3.6-flash)
+VERIFIED_GEMINI_TEXT_MODELS = [
+    "gemini-3.6-flash",
+    "gemini-3.6",
+    "gemini-2.5-flash",
+    "gemini-2.5",
+    "gemini-1.5-flash",
+    "gemini-1.5-flash-latest",
+    "gemini-1.5-pro",
+    "gemini-1.5-flash-8b"
+]
+
+# Blacklist substrings for non-text, experimental, image, or deprecated models
+EXCLUDED_MODEL_PATTERNS = [
+    "high-res",
+    "exp",
+    "preview",
+    "embedding",
+    "image",
+    "imagen",
+    "vision",
+    "aqa",
+    "audio",
+    "whisper",
+    "video",
+    "gemini-pro",       # Deprecated in v1beta
+    "gemini-2.0-flash"  # Explicitly deprecated by Google in favor of gemini-3.6-flash
+]
+
 
 class OdinAIEngine:
     """OdinAI Health Intelligence Agent with Active LLM capabilities."""
 
     def __init__(self):
         self.citations = SCIENTIFIC_CITATIONS
+        self.cached_gemini_model: Optional[str] = "gemini-3.6-flash"
 
     def analyze_recovery_status(self, profile: UnifiedHealthProfile) -> Dict[str, Any]:
         """Synthesize multi-modal biometric signals to compute autonomic recovery."""
@@ -139,7 +170,7 @@ class OdinAIEngine:
                 "severity": "medium",
                 "metric": "Resting Heart Rate",
                 "detected_value": f"{current_rhr} bpm",
-                "baseline_value": f"{base_rhr} bpm",
+                "baseline_value": f"{base_hrv} bpm",
                 "message": "Nocturnal heart rate elevated by +5 bpm. Potential early immune response or late caloric intake.",
                 "actionable_fix": "Ensure dinner is completed at least 3 hours before sleep; hydrate with electrolytes."
             })
@@ -234,14 +265,14 @@ class OdinAIEngine:
     # ============ ACTIVE REAL-TIME LLM INTEGRATION ============
 
     async def test_api_connection(self, api_key: str, provider: str = "gemini") -> Dict[str, Any]:
-        """Test API key connection to Gemini or OpenAI."""
-        key = api_key.strip()
+        """Test API key connection to Gemini or OpenAI with gemini-3.6-flash priority."""
+        key = api_key.strip().strip("'\"")
         if not key:
             return {"success": False, "error": "API key is empty."}
 
         start_time = time.time()
         try:
-            async with httpx.AsyncClient(timeout=10.0) as client:
+            async with httpx.AsyncClient(timeout=12.0) as client:
                 if provider.lower() == "openai" or key.startswith("sk-"):
                     headers = {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
                     payload = {
@@ -257,24 +288,84 @@ class OdinAIEngine:
                         err_json = resp.json() if "application/json" in resp.headers.get("content-type", "") else {"error": resp.text}
                         return {"success": False, "status_code": resp.status_code, "error": err_json.get("error", {}).get("message", resp.text)}
                 else:
-                    # Google Gemini API - test models in sequence
-                    models_to_try = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-pro"]
-                    last_err = ""
-                    for model in models_to_try:
-                        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
-                        # Universal contents schema without proto errors
-                        payload = {
-                            "contents": [{"role": "user", "parts": [{"text": "Respond with 'pong'"}]}],
-                            "generationConfig": {"maxOutputTokens": 5}
-                        }
-                        resp = await client.post(url, json=payload)
-                        latency = int((time.time() - start_time) * 1000)
-                        if resp.status_code == 200:
-                            return {"success": True, "provider": "Google Gemini", "model": model, "latency_ms": latency}
-                        else:
-                            last_err = f"HTTP {resp.status_code}: {resp.text[:200]}"
+                    # 1. Query Google Generative Language v1beta/models to find active models
+                    list_url = f"https://generativelanguage.googleapis.com/v1beta/models?key={key}"
+                    list_resp = await client.get(list_url, timeout=8.0)
 
-                    return {"success": False, "provider": "Google Gemini", "error": last_err}
+                    available_models = []
+                    if list_resp.status_code == 200:
+                        data = list_resp.json()
+                        for m in data.get("models", []):
+                            methods = m.get("supportedGenerationMethods", []) or m.get("supported_generation_methods", [])
+                            if "generateContent" in methods:
+                                name = m.get("name", "").replace("models/", "").strip()
+                                nl = name.lower()
+                                # Discard embeddings, audio, vision, and deprecated models
+                                if any(bad in nl for bad in EXCLUDED_MODEL_PATTERNS):
+                                    continue
+                                # Accept any recognized text model or standard gemini model
+                                if any(good in nl for good in VERIFIED_GEMINI_TEXT_MODELS) or "gemini" in nl:
+                                    if name not in available_models:
+                                        available_models.append(name)
+                    else:
+                        # Report invalid key error directly
+                        try:
+                            msg = list_resp.json().get("error", {}).get("message")
+                        except Exception:
+                            msg = None
+                        if msg:
+                            return {
+                                "success": False,
+                                "provider": "Google Gemini",
+                                "status_code": list_resp.status_code,
+                                "error": f"Google Gemini Error (HTTP {list_resp.status_code}): {msg}"
+                            }
+
+                    # Default fallback models prioritizing gemini-3.6-flash
+                    if not available_models:
+                        available_models = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-1.5-flash"]
+
+                    # Priority sort: gemini-3.6-flash > gemini-2.5-flash > others
+                    def priority(n: str) -> int:
+                        nl = n.lower()
+                        if "3.6-flash" in nl or "3.6" in nl:
+                            return 0
+                        if "2.5-flash" in nl or "2.5" in nl:
+                            return 1
+                        if "flash" in nl and "high-res" not in nl:
+                            return 2
+                        if "pro" in nl:
+                            return 3
+                        return 10
+
+                    available_models.sort(key=priority)
+
+                    # 2. Test generateContent using strictly v1beta
+                    errors = []
+                    for model in available_models:
+                        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+                        payload = {
+                            "contents": [{"parts": [{"text": "Hello"}]}]
+                        }
+                        resp = await client.post(url, json=payload, timeout=10.0)
+                        latency = int((time.time() - start_time) * 1000)
+
+                        if resp.status_code == 200:
+                            self.cached_gemini_model = model
+                            return {
+                                "success": True,
+                                "provider": "Google Gemini",
+                                "model": model,
+                                "latency_ms": latency
+                            }
+                        else:
+                            try:
+                                err_msg = resp.json().get("error", {}).get("message", resp.text[:150])
+                            except Exception:
+                                err_msg = resp.text[:150]
+                            errors.append(f"{model}: {err_msg}")
+
+                    return {"success": False, "provider": "Google Gemini", "error": " | ".join(errors) or "Failed to call generateContent"}
         except Exception as e:
             return {"success": False, "error": str(e)}
 
@@ -290,10 +381,10 @@ class OdinAIEngine:
         Returns (response_text, model_name, error_message).
         """
         key = (
-            (api_key or "").strip() or
-            os.getenv("GEMINI_API_KEY", "").strip() or
-            os.getenv("OPENAI_API_KEY", "").strip() or
-            os.getenv("LLM_API_KEY", "").strip()
+            (api_key or "").strip().strip("'\"") or
+            os.getenv("GEMINI_API_KEY", "").strip().strip("'\"") or
+            os.getenv("OPENAI_API_KEY", "").strip().strip("'\"") or
+            os.getenv("LLM_API_KEY", "").strip().strip("'\"")
         )
         if not key:
             return None, None, None
@@ -350,41 +441,37 @@ class OdinAIEngine:
                         return data["choices"][0]["message"]["content"].strip(), "gpt-4o-mini", None
                     else:
                         err_msg = f"OpenAI HTTP {resp.status_code}: {resp.text[:200]}"
-                        print(f"OpenAI error: {err_msg}")
                         return None, None, err_msg
                 else:
-                    # Universal Gemini payload: combine system instruction into prompt to eliminate proto errors
+                    # Google Gemini Text Generation (v1beta)
                     combined_prompt = f"{system_instruction}\n\nUser Question: {query_text}"
                     payload = {
-                        "contents": [{"role": "user", "parts": [{"text": combined_prompt}]}],
+                        "contents": [{"parts": [{"text": combined_prompt}]}],
                         "generationConfig": {
                             "temperature": 0.7,
                             "maxOutputTokens": 600
                         }
                     }
 
-                    # Sequence of models to fallback gracefully
-                    models = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-pro"]
-                    last_error = None
-                    for model in models:
-                        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
-                        resp = await client.post(url, json=payload)
-                        if resp.status_code == 200:
-                            data = resp.json()
-                            candidates = data.get("candidates", [])
-                            if candidates:
-                                parts = candidates[0].get("content", {}).get("parts", [])
-                                if parts:
-                                    return parts[0].get("text", "").strip(), model, None
-                        else:
-                            last_error = f"Gemini {model} HTTP {resp.status_code}: {resp.text[:200]}"
-                            print(f"Gemini API attempt error: {last_error}")
-
-                    return None, None, last_error
+                    model = self.cached_gemini_model or "gemini-3.6-flash"
+                    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+                    resp = await client.post(url, json=payload)
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        candidates = data.get("candidates", [])
+                        if candidates:
+                            parts = candidates[0].get("content", {}).get("parts", [])
+                            if parts:
+                                return parts[0].get("text", "").strip(), model, None
+                    else:
+                        err_msg = f"Gemini {model} HTTP {resp.status_code}: {resp.text[:200]}"
+                        return None, None, err_msg
 
         except Exception as e:
             print(f"Active LLM call exception: {e}")
             return None, None, str(e)
+
+        return None, None, "Unknown generation error"
 
     async def process_query(
         self,
