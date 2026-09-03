@@ -1,0 +1,233 @@
+/* ================= THEME & STYLING FOR TERRA INTELLIGENCE ENGINE ================= */
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Prompt chip hover */
+.prompt-chip {
+  transition: all 0.15s ease-in-out;
+}
+.prompt-chip:hover {
+  border-color: #10b981 !important;
+  color: #10b981 !important;
+}
+
+/* ================= DARK MODE STYLES (DEFAULT) ================= */
+html.dark body {
+  background-color: #080b14;
+  color: #f3f4f6;
+}
+html.dark .navbar-container {
+  background-color: rgba(12, 16, 28, 0.85);
+  border-color: rgba(31, 41, 55, 0.6);
+}
+html.dark .nav-pill-bar {
+  background-color: rgba(17, 24, 39, 0.9);
+  border-color: rgba(31, 41, 55, 0.8);
+}
+html.dark .nav-tab.active-tab {
+  background-color: #1e293b;
+  color: #ffffff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+}
+html.dark .card-themed {
+  background-color: #0e1320;
+  border-color: rgba(31, 41, 55, 0.8);
+}
+html.dark .inner-card {
+  background-color: rgba(17, 24, 39, 0.8);
+  border-color: #1f2937;
+}
+html.dark .modal-themed {
+  background-color: #0f1422;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+html.dark .btn-themed,
+html.dark .dropdown-themed {
+  background-color: #111827;
+  border-color: #1f2937;
+  color: #e5e7eb;
+}
+html.dark .input-themed {
+  background-color: #111827;
+  border-color: #374151;
+  color: #ffffff;
+}
+html.dark .card-title {
+  color: #ffffff;
+}
+html.dark .card-sub {
+  color: #d1d5db;
+}
+html.dark .card-muted {
+  color: #9ca3af;
+}
+html.dark .card-divider {
+  border-color: rgba(31, 41, 55, 0.8);
+}
+html.dark .subheader-capsule {
+  background-color: rgba(17, 24, 39, 0.4);
+  border-color: rgba(31, 41, 55, 0.6);
+}
+html.dark .subheader-title {
+  color: #ffffff;
+}
+html.dark .subheader-val {
+  color: #e5e7eb;
+}
+html.dark .subheader-muted {
+  color: #9ca3af;
+}
+html.dark .slider-track {
+  background-color: #1f2937;
+}
+
+/* ================= LIGHT MODE STYLES ================= */
+html:not(.dark) body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+html:not(.dark) .navbar-container {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-color: #e2e8f0;
+}
+html:not(.dark) .brand-text {
+  color: #0f172a !important;
+}
+html:not(.dark) .nav-pill-bar {
+  background-color: #f1f5f9;
+  border-color: #e2e8f0;
+}
+html:not(.dark) .nav-tab {
+  color: #64748b;
+}
+html:not(.dark) .nav-tab:hover {
+  color: #0f172a;
+}
+html:not(.dark) .nav-tab.active-tab {
+  background-color: #ffffff;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+}
+html:not(.dark) .card-themed {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+}
+html:not(.dark) .inner-card {
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+}
+html:not(.dark) .modal-themed {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+html:not(.dark) .btn-themed,
+html:not(.dark) .dropdown-themed {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  color: #0f172a;
+}
+html:not(.dark) .btn-themed:hover,
+html:not(.dark) .dropdown-themed:hover {
+  background-color: #f1f5f9;
+}
+html:not(.dark) .input-themed {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+html:not(.dark) .card-title {
+  color: #0f172a !important;
+}
+html:not(.dark) .card-sub {
+  color: #334155 !important;
+}
+html:not(.dark) .card-muted {
+  color: #64748b !important;
+}
+html:not(.dark) .card-divider {
+  border-color: #e2e8f0 !important;
+}
+html:not(.dark) .subheader-capsule {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+html:not(.dark) .subheader-title {
+  color: #0f172a !important;
+}
+html:not(.dark) .subheader-val {
+  color: #334155 !important;
+}
+html:not(.dark) .subheader-muted {
+  color: #64748b !important;
+}
+html:not(.dark) .slider-track {
+  background-color: #e2e8f0;
+}
+html:not(.dark) .result-card {
+  background: linear-gradient(to bottom right, #f8fafc, #ffffff) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+/* ================= SPOTLIGHT CUTOUT & DIRECTIONAL POPOVER ================= */
+#tourSpotlight {
+  position: fixed;
+  border-radius: 14px;
+  box-shadow: 0 0 0 9999px rgba(3, 7, 18, 0.82), 0 0 25px rgba(16, 185, 129, 0.45);
+  border: 2px solid #10b981;
+  pointer-events: none;
+  transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              left 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 50;
+}
+
+html:not(.dark) #tourSpotlight {
+  box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.7), 0 0 25px rgba(16, 185, 129, 0.35);
+}
+
+#tourPopover {
+  z-index: 55;
+  transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              left 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.2s ease;
+}
+
+.arrow-up {
+  top: -7px;
+  border-top: 1px solid #10b981;
+  border-left: 1px solid #10b981;
+}
+
+.arrow-down {
+  bottom: -7px;
+  border-bottom: 1px solid #10b981;
+  border-right: 1px solid #10b981;
+}

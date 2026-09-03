@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terra Intelligence Engine | Unified Health AI</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="/static/style.css" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            terra: {
+              50: '#ecfdf5',
+              500: '#10b981',
+              600: '#059669',
+              dark: '#070a12',
+              card: '#0e1320',
+              border: '#1a2234'
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#080b14] text-gray-100 font-sans antialiased min-h-screen flex flex-col selection:bg-emerald-500/20 selection:text-emerald-400 transition-colors duration-200">
+
+  <!-- ================= SLEEK BALANCED NAVBAR ================= -->
+  <header class="border-b border-gray-800/60 bg-[#0c101c]/80 backdrop-blur-md sticky top-0 z-40 navbar-container transition-colors duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Tagline (Left) -->
+      <div class="flex items-center space-x-3 shrink-0" id="tour-brand">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center shadow-md shadow-emerald-500/20">
+          <i class="fa-solid fa-dna text-black text-sm"></i>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-base font-bold tracking-tight text-white brand-text">TERRA</span>
+          <span class="text-[10px] uppercase px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold tracking-wider">AI Engine</span>
+        </div>
+      </div>
+
+      <!-- Segmented Navigation Tabs (Center) -->
+      <nav class="hidden md:flex items-center bg-gray-900/90 border border-gray-800/80 rounded-xl p-1 text-xs font-medium space-x-1 nav-pill-bar" id="tour-tabs">
+        <button class="nav-tab active-tab px-3 py-1.5 rounded-lg transition" data-tab="tab-overview">
+          <i class="fa-solid fa-gauge-high mr-1.5 text-emerald-400"></i>Overview
+        </button>
+        <button class="nav-tab px-3 py-1.5 rounded-lg text-gray-400 hover:text-white transition" data-tab="tab-odin">
+          <i class="fa-solid fa-brain mr-1.5 text-cyan-400"></i>OdinAI Studio
+        </button>
+        <button class="nav-tab px-3 py-1.5 rounded-lg text-gray-400 hover:text-white transition" data-tab="tab-graphs">
+          <i class="fa-solid fa-chart-line mr-1.5 text-amber-400"></i>Terra Graph API
+        </button>
+        <button class="nav-tab px-3 py-1.5 rounded-lg text-gray-400 hover:text-white transition" data-tab="tab-longevity">
+          <i class="fa-solid fa-hourglass-half mr-1.5 text-teal-400"></i>Longevity Sim
+        </button>
+        <button class="nav-tab px-3 py-1.5 rounded-lg text-gray-400 hover:text-white transition" data-tab="tab-habits">
+          <i class="fa-solid fa-trophy mr-1.5 text-indigo-400"></i>Habits & Cohorts
+        </button>
+      </nav>
+
+      <!-- Right Action Cluster (Even & Aesthetic) -->
+      <div class="flex items-center space-x-2 shrink-0">
+        
+        <!-- Persona Dropdown -->
+        <div class="relative" id="tour-persona">
+          <select id="personaSelect" class="h-9 bg-gray-900 border border-gray-800 hover:border-gray-700 text-xs font-medium text-gray-200 rounded-lg px-2.5 pr-7 focus:outline-none focus:border-emerald-500 cursor-pointer appearance-none dropdown-themed transition">
+            <option value="alex_longevity" selected>Alex Vance (Target 120)</option>
+            <option value="sarah_athlete">Sarah Chen (Triathlon)</option>
+            <option value="marcus_metabolic">Marcus Sterling (Metabolic)</option>
+            <option value="elena_cognitive">Elena Rostova (Cognitive)</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400 text-[10px]">
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+        </div>
+
+        <!-- Dark / Light Mode Toggle Button -->
+        <button id="themeToggleBtn" class="h-9 w-9 bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-800 rounded-lg transition flex items-center justify-center btn-themed" title="Toggle Dark / Light Mode">
+          <i class="fa-regular fa-sun text-xs hidden" id="themeSunIcon"></i>
+          <i class="fa-regular fa-moon text-xs" id="themeMoonIcon"></i>
+        </button>
+
+        <!-- Active AI Key Settings Button -->
+        <button id="navAiSettingsBtn" class="h-9 px-2.5 bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-800 rounded-lg transition flex items-center space-x-1.5 btn-themed" title="Configure Active AI (Gemini / OpenAI)">
+          <i class="fa-solid fa-sparkles text-emerald-400 text-xs"></i>
+          <span class="text-xs hidden lg:inline" id="aiStatusLabel">AI: Local</span>
+        </button>
+
+        <!-- Help / Tour Button -->
+        <button id="startTourBtn" class="h-9 px-2.5 bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-800 rounded-lg transition flex items-center space-x-1.5 btn-themed" title="Take Guided Tour">
+          <i class="fa-regular fa-compass text-emerald-400 text-xs"></i>
+          <span class="text-xs hidden sm:inline">Tour</span>
+        </button>
+
+        <!-- Swagger Docs Link -->
+        <a href="/docs" target="_blank" class="h-9 w-9 bg-gray-900 hover:bg-gray-800 text-gray-400 hover:text-white border border-gray-800 rounded-lg transition flex items-center justify-center btn-themed" title="OpenAPI Docs">
+          <i class="fa-solid fa-code text-xs"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile Tab Bar (Scrollable on small screens) -->
+    <div class="md:hidden flex overflow-x-auto px-4 py-2 border-t border-gray-800/60 space-x-1 text-xs">
+      <button class="nav-tab active-tab whitespace-nowrap px-3 py-1 rounded-md" data-tab="tab-overview">Overview</button>
+      <button class="nav-tab whitespace-nowrap px-3 py-1 rounded-md text-gray-400" data-tab="tab-odin">OdinAI</button>
+      <button class="nav-tab whitespace-nowrap px-3 py-1 rounded-md text-gray-400" data-tab="tab-graphs">Graph API</button>
+      <button class="nav-tab whitespace-nowrap px-3 py-1 rounded-md text-gray-400" data-tab="tab-longevity">Longevity</button>
+      <button class="nav-tab whitespace-nowrap px-3 py-1 rounded-md text-gray-400" data-tab="tab-habits">Habits</button>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
+
+    <!-- Active Persona Capsule / Subheader -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gray-900/40 border border-gray-800/60 rounded-xl px-4 py-3 text-xs subheader-capsule transition-colors">
+      <div class="flex items-center space-x-3">
+        <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
+        <div>
+          <span class="text-gray-400 subheader-muted">Active Profile:</span>
+          <strong id="personaName" class="text-white ml-1 font-semibold subheader-title">Alex Vance</strong>
+          <span class="text-gray-500 mx-1.5">•</span>
+          <span id="personaGoal" class="text-emerald-400 font-medium">Longevity (Target 120)</span>
+        </div>
+      </div>
+      <div class="text-gray-400 flex items-center space-x-2 subheader-muted">
+        <span>Sensors:</span>
+        <span id="personaSensors" class="text-gray-300 font-medium subheader-val">Oura Gen3, Dexcom G7, Apple Watch</span>
+        <button id="refreshDataBtn" class="ml-2 hover:text-emerald-400 transition" title="Refresh Live Stream">
+          <i class="fa-solid fa-arrows-rotate text-[11px]"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Active Biometric Alert Banner (Only shown if anomalies exist) -->
+    <div id="anomalyBanner" class="hidden rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-xs text-amber-200 flex items-center justify-between">
+      <div class="flex items-center space-x-2.5">
+        <i class="fa-solid fa-triangle-exclamation text-amber-400 text-sm"></i>
+        <span id="anomalyBannerText">Biometric anomaly detected in recent wearable telemetry.</span>
+      </div>
+      <button class="text-amber-300 underline hover:text-white font-medium" onclick="switchTab('tab-odin')">
+        Ask OdinAI
+      </button>
+    </div>
+
+    <!-- ================= TAB 1: OVERVIEW ================= -->
+    <div id="tab-overview" class="tab-content space-y-6">
+      
+      <!-- 4 Hero Vital Stat Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5" id="tour-vitals">
+        
+        <!-- Recovery Score -->
+        <div class="bg-[#0e1320] border border-gray-800/80 rounded-2xl p-4 transition card-themed">
+          <div class="flex items-center justify-between text-xs text-gray-400 card-muted mb-1">
+            <span>Autonomic Recovery</span>
+            <i class="fa-solid fa-heart-pulse text-emerald-400"></i>
+          </div>
+          <div class="flex items-baseline space-x-1.5 my-1">
+            <span id="metricRecovery" class="text-3xl font-black text-emerald-400">--</span>
+            <span class="text-xs text-gray-500 card-muted">/ 100</span>
+          </div>
+          <p id="metricRecoveryStatus" class="text-[11px] text-gray-400 card-muted truncate">Calculating...</p>
+        </div>
+
+        <!-- HRV rMSSD -->
+        <div class="bg-[#0e1320] border border-gray-800/80 rounded-2xl p-4 transition card-themed">
+          <div class="flex items-center justify-between text-xs text-gray-400 card-muted mb-1">
+            <span>Overnight HRV</span>
+            <i class="fa-solid fa-wave-square text-cyan-400"></i>
+          </div>
+          <div class="flex items-baseline space-x-1.5 my-1">
+            <span id="metricHrv" class="text-3xl font-black text-cyan-400">--</span>
+            <span class="text-xs text-gray-500 card-muted">ms</span>
+          </div>
+          <p id="metricHrvZ" class="text-[11px] text-emerald-400">z-score: --</p>
+        </div>
+
+        <!-- Sleep Quality -->
+        <div class="bg-[#0e1320] border border-gray-800/80 rounded-2xl p-4 transition card-themed">
+          <div class="flex items-center justify-between text-xs text-gray-400 card-muted mb-1">
+            <span>Sleep Efficiency</span>
+            <i class="fa-solid fa-moon text-indigo-400"></i>
+          </div>
+          <div class="flex items-baseline space-x-1.5 my-1">
+            <span id="metricSleep" class="text-3xl font-black text-indigo-400">--</span>
+            <span class="text-xs text-gray-500 card-muted">%</span>
+          </div>
+          <p id="metricDeepSleep" class="text-[11px] text-gray-400 card-muted">Deep: -- mins</p>
+        </div>
+
+        <!-- Biological Age Advantage -->
+        <div class="bg-[#0e1320] border border-gray-800/80 rounded-2xl p-4 transition card-themed">
+          <div class="flex items-center justify-between text-xs text-gray-400 card-muted mb-1">
+            <span>Biological Age</span>
+            <i class="fa-solid fa-hourglass-half text-teal-400"></i>
+          </div>
+          <div class="flex items-baseline space-x-1.5 my-1">
+            <span id="metricBioAge" class="text-3xl font-black text-teal-400">--</span>
+            <span class="text-xs text-gray-500 card-muted">yrs</span>
+          </div>
+          <p id="metricBioDelta" class="text-[11px] text-emerald-400">--</p>
+        </div>
+      </div>
+
+      <!-- Overview Visuals: CGM 24h & Prescribed Adaptive Action -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- CGM Glucose Curve Preview (2 cols) -->
+        <div class="lg:col-span-2 bg-[#0e1320] border border-gray-800/80 rounded-2xl p-5 card-themed">
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h3 class="text-sm font-semibold text-white card-title flex items-center">
+                <i class="fa-solid fa-droplet text-amber-400 mr-2 text-xs"></i>
+                Continuous Glucose Profile (CGM 24h)
+              </h3>
+              <p class="text-[11px] text-gray-400 card-muted">Target Range 70–140 mg/dL • Terra Graph API</p>
+            </div>
+            <span id="overviewTirBadge" class="text-xs font-semibold px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20">
+              TIR: 92%
+            </span>
+          </div>
+          <div class="relative h-56 w-full">
+            <canvas id="overviewAgpChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Prescribed Adaptive Workout Card (1 col) -->
+        <div class="bg-[#0e1320] border border-gray-800/80 rounded-2xl p-5 flex flex-col justify-between card-themed">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[11px] uppercase tracking-wider text-cyan-400 font-semibold flex items-center">
+                <i class="fa-solid fa-person-running mr-1.5"></i> Today's Prescription
+              </span>
+              <span id="overviewWorkoutStrain" class="text-[11px] font-medium px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">Strain 12.0</span>
+            </div>
+            <h4 id="overviewWorkoutTitle" class="text-base font-bold text-white card-title mb-1.5">Mitochondrial Zone 2 Ride</h4>
+            <p id="overviewWorkoutDesc" class="text-xs text-gray-300 card-sub mb-3 leading-relaxed">45 minutes maintaining conversation-pace nasal breathing.</p>
+            <div class="bg-gray-900/80 inner-card border border-gray-800 rounded-xl p-3 text-[11px] text-gray-400 card-muted">
+              <strong class="text-gray-300 card-title block mb-0.5">Physiological Rationale:</strong>
+              <span id="overviewWorkoutRationale">Optimizes lipid oxidation and lactate clearance without sympathetic strain.</span>
+            </div>
+          </div>
+          <div class="pt-4 mt-4 border-t border-gray-800/80 card-divider flex items-center justify-between">
+            <button class="text-xs text-emerald-400 hover:text-emerald-300 font-medium flex items-center space-x-1" onclick="switchTab('tab-odin')">
+              <span>Ask OdinAI for workout tweaks</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 2: ODINAI STUDIO ================= -->
+    <div id="tab-odin" class="tab-content hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Chat Console (2 cols) -->
+        <div class="lg:col-span-2 bg-[#0e1320] border border-gray-800/80 rounded-2xl p-5 flex flex-col h-[580px] card-themed" id="tour-odin">
+          <!-- Chat Header -->
+          <div class="flex items-center justify-between pb-3 border-b border-gray-800/80 card-divider">
+            <div class="flex items-center space-x-2.5">
+              <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
+                <i class="fa-solid fa-brain"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-white card-title">OdinAI Health Intelligence</h3>
+                <p class="text-[10px] text-gray-400 card-muted">Multi-sensor telemetry reasoning + Peer-Reviewed Sports Science</p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button id="openAiModalBtn" class="text-[10px] text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-2.5 py-1 rounded-full border border-emerald-500/20 flex items-center transition">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1.5"></span>
+                <span id="activeAiModelTag">Active AI: Auto</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Chat Messages Area -->
+          <div id="chatHistory" class="flex-1 overflow-y-auto py-4 space-y-4 pr-1 text-xs">
+            <div class="flex items-start space-x-3">
+              <div class="w-7 h-7 rounded-full bg-emerald-600/30 text-emerald-400 flex items-center justify-center text-xs shrink-0 mt-0.5">
+                <i class="fa-solid fa-dna"></i>
+              </div>
+              <div class="bg-gray-800/80 inner-card border border-gray-700/60 rounded-xl rounded-tl-none p-3.5 text-gray-200 card-sub space-y-2 max-w-xl">
+                <p>Hello! I am <strong>OdinAI</strong>, your health intelligence companion on Terra's unified data infrastructure.</p>
+                <p class="text-[11px] text-gray-400 card-muted">Ask me anything about your recovery score, sleep architecture, glycemic variability, or training adaptation. Every insight is grounded in peer-reviewed clinical research.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Prompt Suggestions -->
+          <div class="py-2.5 flex flex-wrap gap-1.5 text-xs border-t border-gray-800/60 card-divider">
+            <button class="prompt-chip bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-800 px-2.5 py-1 rounded-lg text-[11px] transition" data-query="Why is my recovery score at this level today?">
+              <i class="fa-solid fa-heart-pulse mr-1 text-emerald-400"></i> Why is my recovery at this score?
+            </button>
+            <button class="prompt-chip bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-800 px-2.5 py-1 rounded-lg text-[11px] transition" data-query="What is my recommended adaptive workout today?">
+              <i class="fa-solid fa-dumbbell mr-1 text-cyan-400"></i> What workout should I do?
+            </button>
+            <button class="prompt-chip bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-800 px-2.5 py-1 rounded-lg text-[11px] transition" data-query="Analyze my blood glucose excursions and post-meal response.">
+              <i class="fa-solid fa-droplet mr-1 text-amber-400"></i> Analyze my glucose & CGM
+            </button>
+            <button class="prompt-chip bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-800 px-2.5 py-1 rounded-lg text-[11px] transition" data-query="How am I tracking towards extreme longevity and Target 120?">
+              <i class="fa-solid fa-infinity mr-1 text-teal-400"></i> Tracking for Target 120
+            </button>
+          </div>
+
+          <!-- Input Bar -->
+          <form id="chatForm" class="flex items-center space-x-2 pt-2 border-t border-gray-800/60 card-divider">
+            <input id="chatInput" type="text" placeholder="Ask OdinAI about your biometrics, recovery, or training..." class="flex-1 bg-gray-900 border border-gray-700/80 text-white input-themed rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-emerald-500 transition" />
+            <button type="submit" class="bg-emerald-500 hover:bg-emerald-600 text-black px-4 py-2 rounded-xl font-bold text-xs transition flex items-center space-x-1">
+              <span>Ask</span>
+              <i class="fa-solid fa-paper-plane text-[10px]"></i>
+            </button>
+          </form>
+        </div>
+
+        <!-- Anomaly Panel & Literature Reference (1 col) -->
+        <div class="space-y-6">
+          <!-- Active Biometric Alerts -->
+          <div class="bg-[#0e1320] border border-gray-800/80 rounded-2xl p-5 card-themed">
+            <div class="flex items-center justify-between mb-3">
+              <h4 class="text-xs font-bold text-white card-title flex items-center">
+                <i class="fa-solid fa-triangle-exclamation mr-2 text-rose-400"></i>
+                Biometric Alerts
+              </h4>
+              <span id="alertsCount" class="text-[10px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-2 py-0.5 rounded-full font-semibold">0 Active</span>
+            </div>
+            <div id="alertsContainer" class="space-y-2 text-xs">
+              <p class="text-gray-400 card-muted text-[11px]">No active anomalies detected.</p>
+            </div>
+          </div>
+
+          <!-- Scientific Citations Reference Box -->
+          <div class="bg-[#0e1320] border border-gray-800/80 rounded-2xl p-5 text-xs card-themed">
+            <h4 class="text-xs font-bold text-white card-title flex items-center mb-3">
+              <i class="fa-solid fa-book-bookmark mr-2 text-emerald-400"></i>
+              Scientific Grounding
+            </h4>
+            <div class="space-y-2.5 text-[11px] text-gray-400 card-muted">
+              <div class="border-l-2 border-emerald-500/40 pl-2.5">
+                <strong class="text-gray-300 card-title block">HRV Autonomic Readiness</strong>
+                Buchheit, M. (2014) • <em>Frontiers in Physiology</em>
+              </div>
+              <div class="border-l-2 border-indigo-500/40 pl-2.5">
+                <strong class="text-gray-300 card-title block">Slow-Wave Sleep Delta Repair</strong>
+                Walker & Stickgold (2017) • <em>Nature Neuroscience</em>
+              </div>
+              <div class="border-l-2 border-amber-500/40 pl-2.5">
+                <strong class="text-gray-300 card-title block">Mitochondrial Zone 2 Fat Oxidation</strong>
+                San Millán & Brooks (2018) • <em>Sports Medicine</em>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 3: TERRA GRAPH API ================= -->
+    <div id="tab-graphs" class="tab-content hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Ambulatory Glucose Profile (AGP) -->
+        <div class="bg-[#0e1320] border border-gray-800/80 rounded-2xl p-5 card-themed">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-sm font-semibold text-white card-title flex items-center">
+                <i class="fa-solid fa-chart-area mr-2 text-amber-400"></i>
+                Ambulatory Glucose Profile (AGP) 24h
+              </h3>
+              <p class="text-[11px] text-gray-400 card-muted">Clinical Target: 70–140 mg/dL</p>
+            </div>
+            <div id="agpBadge" class="text-xs font-semibold px-2.5 py-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              TIR: 92%
+            </div>
+          </div>
+          <div class="relative h-60 w-full">
+            <canvas id="agpChart"></canvas>
+          </div>
+          <div class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-gray-800/80 card-divider text-center text-xs">
+            <div>
+              <span class="text-gray-400 card-muted text-[10px] block">Mean Glucose</span>
+              <strong id="agpMean" class="text-gray-200 card-title">-- mg/dL</strong>
+            </div>
+            <div>
+              <span class="text-gray-400 card-muted text-[10px] block">Est. A1c (GMI)</span>
+              <strong id="agpGmi" class="text-emerald-400">--%</strong>
+            </div>
+            <div>
+              <span class="text-gray-400 card-muted text-[10px] block">Variability (CV)</span>
+              <strong id="agpCv" class="text-gray-200 card-title">--%</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sleep Architecture Hypnogram -->
+        <div class="bg-[#0e1320] border border-gray-800/80 rounded-2xl p-5 card-themed">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-sm font-semibold text-white card-title flex items-center">
+                <i class="fa-solid fa-bed mr-2 text-indigo-400"></i>
+                Sleep Architecture & Hypnogram
+              </h3>
+              <p class="text-[11px] text-gray-400 card-muted">Deep, REM, Light, and Awake breakdown</p>
+            </div>
+            <div id="sleepScoreBadge" class="text-xs font-semibold px-2.5 py-1 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+              Score: 91
+            </div>
+          </div>
+          <div class="relative h-60 w-full">
+            <canvas id="sleepChart"></canvas>
+          </div>
+          <div class="grid grid-cols-4 gap-2 mt-4 pt-3 border-t border-gray-800/80 card-divider text-center text-xs">
+            <div>
+              <span class="text-gray-400 card-muted text-[10px] block">Deep</span>
+              <strong id="hypnoDeep" class="text-indigo-300">--m</strong>
+            </div>
+            <div>
+              <span class="text-gray-400 card-muted text-[10px] block">REM</span>
+              <strong id="hypnoRem" class="text-cyan-300">--m</strong>
+            </div>
+            <div>
+              <span class="text-gray-400 card-muted text-[10px] block">Light</span>
+              <strong id="hypnoLight" class="text-gray-400">--m</strong>
+            </div>
+            <div>
+              <span class="text-gray-400 card-muted text-[10px] block">Awake</span>
+              <strong id="hypnoAwake" class="text-rose-400">--m</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14-Day Multi-Stream Correlation -->
+      <div class="bg-[#0e1320] border border-gray-800/80 rounded-2xl p-5 card-themed">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-sm font-semibold text-white card-title flex items-center">
+              <i class="fa-solid fa-diagram-project mr-2 text-teal-400"></i>
+              14-Day Multi-Stream Longitudinal Coupling
+            </h3>
+            <p class="text-[11px] text-gray-400 card-muted">Overlaying Daily Workout Strain vs Sleep Duration vs Overnight HRV</p>
+          </div>
+        </div>
+        <div class="relative h-60 w-full">
+          <canvas id="correlationChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 4: LONGEVITY & WHAT-IF ================= -->
+    <div id="tab-longevity" class="tab-content hidden space-y-6">
+      <div class="bg-[#0e1320] border border-gray-800/80 rounded-2xl p-6 space-y-6 card-themed" id="tour-whatif">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-800/80 card-divider pb-4">
+          <div>
+            <h3 class="text-base font-bold text-white card-title flex items-center">
+              <i class="fa-solid fa-sliders mr-2 text-teal-400"></i>
+              10-Year Health Forecasting & What-If Simulator
+            </h3>
+            <p class="text-xs text-gray-400 card-muted mt-0.5">Test counterfactual lifestyle interventions to simulate shifts in Biological Age and Mortality Hazard Ratio</p>
+          </div>
+          <div class="text-xs text-gray-400 card-muted">
+            Chrono Age: <strong id="simChronoAge" class="text-white card-title">42</strong> yrs • Current Bio-Age: <strong id="simCurrentBioAge" class="text-teal-400">38.2</strong> yrs
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <!-- Sliders -->
+          <div class="space-y-4 text-xs">
+            <div>
+              <div class="flex justify-between font-medium mb-1">
+                <span class="text-gray-300 card-sub"><i class="fa-solid fa-bed text-indigo-400 mr-1.5"></i> Additional Sleep / Night:</span>
+                <span id="sleepSliderVal" class="text-emerald-400 font-bold">+30 minutes</span>
+              </div>
+              <input id="sleepSlider" type="range" min="0" max="120" step="15" value="30" class="w-full h-1.5 bg-gray-800 slider-track rounded-lg appearance-none cursor-pointer accent-emerald-500" />
+            </div>
+
+            <div>
+              <div class="flex justify-between font-medium mb-1">
+                <span class="text-gray-300 card-sub"><i class="fa-solid fa-heart-pulse text-rose-400 mr-1.5"></i> Additional Zone 2 Cardio / Week:</span>
+                <span id="cardioSliderVal" class="text-emerald-400 font-bold">+60 minutes</span>
+              </div>
+              <input id="cardioSlider" type="range" min="0" max="180" step="15" value="60" class="w-full h-1.5 bg-gray-800 slider-track rounded-lg appearance-none cursor-pointer accent-emerald-500" />
+            </div>
+
+            <div>
+              <div class="flex justify-between font-medium mb-1">
+                <span class="text-gray-300 card-sub"><i class="fa-solid fa-utensils text-amber-400 mr-1.5"></i> Shift Dinner Earlier:</span>
+                <span id="dinnerSliderVal" class="text-emerald-400 font-bold">2.0 hours before bed</span>
+              </div>
+              <input id="dinnerSlider" type="range" min="0" max="4" step="0.5" value="2.0" class="w-full h-1.5 bg-gray-800 slider-track rounded-lg appearance-none cursor-pointer accent-emerald-500" />
+            </div>
+
+            <div>
+              <div class="flex justify-between font-medium mb-1">
+                <span class="text-gray-300 card-sub"><i class="fa-solid fa-chart-simple text-cyan-400 mr-1.5"></i> Glucose Time-in-Range Gain:</span>
+                <span id="tirSliderVal" class="text-emerald-400 font-bold">+8% TIR</span>
+              </div>
+              <input id="tirSlider" type="range" min="0" max="25" step="1" value="8" class="w-full h-1.5 bg-gray-800 slider-track rounded-lg appearance-none cursor-pointer accent-emerald-500" />
+            </div>
+          </div>
+
+          <!-- Output Box -->
+          <div class="bg-gradient-to-br from-gray-900 to-[#070b14] border border-emerald-500/30 rounded-2xl p-6 result-card">
+            <span class="text-[10px] uppercase tracking-wider text-emerald-400 font-semibold mb-2 flex items-center">
+              <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Counterfactual Simulation Result
+            </span>
+            <div class="flex items-baseline space-x-3 my-3">
+              <span class="text-4xl font-black text-white card-title" id="simNewBioAge">35.4</span>
+              <span class="text-xs text-gray-400 card-muted">Projected Bio-Age</span>
+              <span id="simAdvantageBadge" class="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">-2.8 yrs saved</span>
+            </div>
+            <p id="simVerdict" class="text-xs text-gray-300 card-sub leading-relaxed border-t border-gray-800 card-divider pt-3">
+              Decelerating biological aging reduces 10-year all-cause mortality hazard ratio.
+            </p>
+            <div class="grid grid-cols-3 gap-2 mt-4 text-center text-xs">
+              <div class="bg-gray-900/90 inner-card border border-gray-800 rounded-lg p-2">
+                <span class="text-gray-400 card-muted block text-[10px]">HRV Boost</span>
+                <strong id="simHrvGain" class="text-cyan-400">+4.2 ms</strong>
+              </div>
+              <div class="bg-gray-900/90 inner-card border border-gray-800 rounded-lg p-2">
+                <span class="text-gray-400 card-muted block text-[10px]">VO2 Max Gain</span>
+                <strong id="simVo2Gain" class="text-emerald-400">+1.4 ml/kg</strong>
+              </div>
+              <div class="bg-gray-900/90 inner-card border border-gray-800 rounded-lg p-2">
+                <span class="text-gray-400 card-muted block text-[10px]">Resting HR Drop</span>
+                <strong id="simRhrDrop" class="text-indigo-400">-2.2 bpm</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 5: HABITS & COHORTS ================= -->
+    <div id="tab-habits" class="tab-content hidden space-y-6">
+      
+      <!-- Habits & Retention Engine -->
+      <div class="bg-[#0e1320] border border-gray-800/80 rounded-2xl p-5 card-themed">
+        <div class="flex items-center justify-between border-b border-gray-800/80 card-divider pb-3 mb-4">
+          <div>
+            <h3 class="text-sm font-bold text-white card-title flex items-center">
+              <i class="fa-solid fa-trophy text-amber-400 mr-2 text-xs"></i>
+              Behavioral Retention & Streak Multiplier
+            </h3>
+            <p class="text-[11px] text-gray-400 card-muted">RL-based micro-incentives sustaining Day-30 and Day-90 engagement</p>
+          </div>
+          <button id="claimStreakBtn" class="text-xs px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 rounded-lg transition font-semibold flex items-center space-x-1">
+            <i class="fa-solid fa-fire text-amber-400"></i>
+            <span>Claim Streak</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+          <div class="bg-gray-900 inner-card border border-gray-800 rounded-xl p-3">
+            <span class="text-gray-400 card-muted block text-[10px]">Active Streak</span>
+            <div class="flex items-baseline space-x-1 mt-0.5">
+              <span id="rewardStreak" class="text-xl font-bold text-amber-400">12</span>
+              <span class="text-gray-400 card-muted">Days</span>
+            </div>
+            <span id="rewardMultiplier" class="text-[10px] text-emerald-400 font-semibold block">1.85x Multiplier</span>
+          </div>
+
+          <div class="bg-gray-900 inner-card border border-gray-800 rounded-xl p-3">
+            <span class="text-gray-400 card-muted block text-[10px]">Daily Points</span>
+            <div class="flex items-baseline space-x-1 mt-0.5">
+              <span id="rewardPoints" class="text-xl font-bold text-white card-title">680</span>
+              <span class="text-gray-400 card-muted">pts</span>
+            </div>
+            <span id="rewardHabitsMet" class="text-[10px] text-gray-400 card-muted block">4 habits met</span>
+          </div>
+
+          <div class="bg-gray-900 inner-card border border-gray-800 rounded-xl p-3">
+            <span class="text-gray-400 card-muted block text-[10px]">Retention Index</span>
+            <div class="flex items-baseline space-x-1 mt-0.5">
+              <span id="retentionScore" class="text-xl font-bold text-emerald-400">95</span>
+              <span class="text-gray-400 card-muted">/ 100</span>
+            </div>
+            <span id="churnRisk" class="text-[10px] text-emerald-400 block">Low Churn Risk</span>
+          </div>
+
+          <div class="bg-gray-900 inner-card border border-gray-800 rounded-xl p-3">
+            <span class="text-gray-400 card-muted block text-[10px]">Best Nudge Window</span>
+            <div class="flex items-baseline space-x-1 mt-0.5">
+              <span id="nudgeWindow" class="text-sm font-bold text-indigo-300">20:00 (Wind-down)</span>
+            </div>
+            <span id="nudgeStrategy" class="text-[10px] text-gray-400 card-muted block truncate">Positive reinforcement</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Causal Graph Pathways & Digital Twins -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Causal Graph Pathways -->
+        <div class="bg-[#0e1320] border border-gray-800/80 rounded-2xl p-5 card-themed">
+          <h4 class="text-xs font-bold text-white card-title flex items-center mb-3">
+            <i class="fa-solid fa-circle-nodes mr-2 text-emerald-400"></i>
+            Biometric Causal Graph Pathways
+          </h4>
+          <div id="causalImpactsContainer" class="space-y-2 max-h-72 overflow-y-auto text-xs pr-1">
+            <p class="text-gray-400 card-muted">Loading causal pathways...</p>
+          </div>
+        </div>
+
+        <!-- Digital Twins -->
+        <div class="bg-[#0e1320] border border-gray-800/80 rounded-2xl p-5 card-themed">
+          <h4 class="text-xs font-bold text-white card-title flex items-center mb-3">
+            <i class="fa-solid fa-users-viewfinder mr-2 text-indigo-400"></i>
+            Digital Health Twins (Cosine Similarity)
+          </h4>
+          <div id="digitalTwinsContainer" class="space-y-2 max-h-72 overflow-y-auto text-xs pr-1">
+            <p class="text-gray-400 card-muted">Calculating cohort similarities...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= ACTIVE AI SETTINGS MODAL ================= -->
+  <div id="aiModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden animate-fade-in">
+    <div class="bg-[#0f1422] modal-themed border border-emerald-500/30 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-gray-800 card-divider">
+        <div class="flex items-center space-x-2">
+          <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
+            <i class="fa-solid fa-sparkles"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white card-title">Active AI Configuration</h3>
+            <p class="text-[10px] text-gray-400 card-muted">Connect live LLM generative reasoning to OdinAI</p>
+          </div>
+        </div>
+        <button id="closeAiModalBtn" class="text-gray-400 hover:text-white card-muted transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-gray-300 card-sub font-medium mb-1">AI Provider:</label>
+          <select id="aiProviderSelect" class="w-full bg-gray-900 border border-gray-800 rounded-lg p-2 text-xs text-white input-themed focus:outline-none focus:border-emerald-500">
+            <option value="gemini" selected>Google Gemini (Recommended - Free Tier Available)</option>
+            <option value="openai">OpenAI (GPT-4o-mini / GPT-4o)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-gray-300 card-sub font-medium mb-1">API Key:</label>
+          <input id="aiApiKeyInput" type="password" placeholder="Enter AIzaSy... or sk-..." class="w-full bg-gray-900 border border-gray-800 rounded-lg p-2 text-xs text-white input-themed focus:outline-none focus:border-emerald-500" />
+          <p class="text-[10px] text-gray-400 card-muted mt-1">Stored securely in your browser's local storage.</p>
+        </div>
+
+        <div class="bg-gray-900/60 inner-card border border-gray-800/80 rounded-xl p-3 text-[11px] text-gray-400 card-muted leading-relaxed">
+          <strong class="text-emerald-400 block mb-1"><i class="fa-solid fa-circle-info mr-1"></i> How this works:</strong>
+          When an API key is connected, OdinAI dynamically injects real-time biometric streams (HRV z-scores, CGM readings, sleep hypnogram stages) into the LLM system prompt to generate live, scientifically grounded responses!
+        </div>
+        <div id="aiTestResult" class="hidden text-[11px] rounded-lg p-2.5"></div>
+      </div>
+
+      <div class="flex items-center justify-between pt-3 border-t border-gray-800 card-divider">
+        <button id="clearAiKeyBtn" class="text-xs text-rose-400 hover:text-rose-300 transition">
+          Clear Key
+        </button>
+        <div class="flex items-center space-x-2">
+          <button id="testAiKeyBtn" class="text-xs px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-cyan-300 border border-cyan-500/30 transition flex items-center space-x-1">
+            <i class="fa-solid fa-bolt text-[10px]"></i>
+            <span>Test Connection</span>
+          </button>
+          <button id="saveAiKeyBtn" class="text-xs px-4 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-black font-bold transition shadow">
+            Save & Activate
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SPOTLIGHT CUTOUT & DIRECTIONAL POPOVER TOUR ================= -->
+  <div id="tourContainer" class="hidden">
+    <div id="tourSpotlight"></div>
+
+    <div id="tourPopover" class="fixed z-50 bg-[#0e1422] modal-themed border border-emerald-500/40 rounded-2xl p-5 shadow-2xl max-w-sm w-full transition-all duration-300 space-y-3">
+      <div id="tourArrow" class="absolute w-3 h-3 bg-[#0e1422] modal-themed border-emerald-500/40 rotate-45 pointer-events-none"></div>
+
+      <div class="flex items-center justify-between text-[11px] text-gray-400 card-muted border-b border-gray-800 pb-2 card-divider">
+        <span class="flex items-center text-emerald-400 font-semibold">
+          <i class="fa-solid fa-compass mr-1.5 text-xs"></i>
+          <span id="tourStepIndicator">Step 1 of 6</span>
+        </span>
+        <button id="tourSkipBtn" class="text-gray-400 card-muted hover:text-white transition font-medium flex items-center">
+          Skip Tour <i class="fa-solid fa-xmark ml-1 text-[10px]"></i>
+        </button>
+      </div>
+
+      <div class="space-y-1.5 py-1">
+        <div class="flex items-center space-x-2">
+          <div class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs shrink-0">
+            <i class="fa-solid fa-dna" id="tourIcon"></i>
+          </div>
+          <h4 class="text-sm font-bold text-white card-title" id="tourTitle">Tour Title</h4>
+        </div>
+        <p class="text-xs text-gray-300 card-sub leading-relaxed" id="tourDescription">Tour description.</p>
+      </div>
+
+      <div class="flex items-center justify-between pt-2 border-t border-gray-800 card-divider">
+        <div class="flex items-center space-x-1" id="tourDots"></div>
+        <div class="flex items-center space-x-1.5">
+          <button id="tourPrevBtn" class="text-xs px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 transition font-medium hidden">
+            Back
+          </button>
+          <button id="tourNextBtn" class="text-xs px-3.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-black transition font-bold shadow">
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
