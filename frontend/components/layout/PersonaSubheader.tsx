@@ -1,7 +1,5 @@
 'use client';
-import { RefreshCw } from 'lucide-react';
 import type { Persona, AnomaliesResponse } from '@/types/api';
-import { useAppStore } from '@/store/appStore';
 
 interface Props {
   persona: Persona | null;

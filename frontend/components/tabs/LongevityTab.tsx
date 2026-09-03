@@ -52,6 +52,10 @@ export function LongevityTab({ bioAge }: Props) {
     setLoading(false);
   }, [currentPersona, sleep, cardio, dinner, tir]);
 
+  // Legitimate data-fetching effect (syncs with the FastAPI what-if endpoint);
+  // runSim sets a loading flag synchronously before its async call, which is
+  // fine here and not the cascading-render pattern this rule targets.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { runSim(); }, [runSim]);
 
   const outcome = result?.simulated_outcome;

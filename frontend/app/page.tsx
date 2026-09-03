@@ -25,7 +25,7 @@ export default function DashboardPage() {
       const t = setTimeout(() => setTourActive(true), 800);
       return () => clearTimeout(t);
     }
-  }, []);
+  }, [hasSeenTour]);
 
   const handleCloseTour = () => {
     setTourActive(false);
@@ -101,7 +101,7 @@ export default function DashboardPage() {
       <GuidedTour
         isActive={tourActive}
         onClose={handleCloseTour}
-        onSwitchTab={(tab) => setSelectedTab(tab as any)}
+        onSwitchTab={setSelectedTab}
       />
     </div>
   );

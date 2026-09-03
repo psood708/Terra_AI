@@ -3,9 +3,6 @@ import { PieChart, Pie, Cell, Legend, ResponsiveContainer, Tooltip } from 'recha
 import { useTheme } from 'next-themes';
 import type { HypnogramResponse } from '@/types/api';
 
-const COLORS = ['#6366f1', '#06b6d4', '#475569', '#f43f5e'];
-const STAGE_LABELS = ['Deep Sleep', 'REM Sleep', 'Light Sleep', 'Awake'];
-
 interface Props { data: HypnogramResponse; }
 
 export function HypnogramChart({ data }: Props) {

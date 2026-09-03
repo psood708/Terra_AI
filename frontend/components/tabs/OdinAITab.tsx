@@ -106,7 +106,7 @@ export function OdinAITab({ anomalies, onOpenAiModal }: Props) {
                       <div className="mt-3 pt-2.5 text-[10px] space-y-1" style={{ borderTop: '1px solid var(--border)', color: 'var(--text-muted)' }}>
                         <strong className="text-emerald-400 block">📚 Scientific Grounding:</strong>
                         {msg.citations.map((c, i) => (
-                          <div key={i}>• <strong>{c.authors}</strong> ({c.journal}) – <em>"{c.key_takeaway}"</em></div>
+                          <div key={i}>• <strong>{c.authors}</strong> ({c.journal}) – <em>&quot;{c.key_takeaway}&quot;</em></div>
                         ))}
                       </div>
                     )}

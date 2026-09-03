@@ -1,10 +1,11 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Compass, X, ChevronRight, ChevronLeft } from 'lucide-react';
+import type { TabId } from '@/types/api';
 
 interface TourStep {
   targetId: string;
-  tabId?: string;
+  tabId?: TabId;
   icon: string;
   title: string;
   description: string;
@@ -53,7 +54,7 @@ const TOUR_STEPS: TourStep[] = [
 interface TourProps {
   isActive: boolean;
   onClose: () => void;
-  onSwitchTab?: (tab: string) => void;
+  onSwitchTab?: (tab: TabId) => void;
 }
 
 interface Rect { top: number; left: number; width: number; height: number; }
@@ -65,7 +66,7 @@ export function GuidedTour({ isActive, onClose, onSwitchTab }: TourProps) {
   const [arrowLeft, setArrowLeft] = useState(20);
   const [isAbove, setIsAbove] = useState(false);
 
-  const measure = () => {
+  const measure = useCallback(() => {
     const s = TOUR_STEPS[step];
     const el = document.getElementById(s.targetId);
     if (!el) return;
@@ -95,7 +96,7 @@ export function GuidedTour({ isActive, onClose, onSwitchTab }: TourProps) {
     const arrowX = Math.max(20, Math.min(pw - 28, (sLeft + sW / 2) - pLeft - 6));
     setArrowLeft(arrowX);
     setIsAbove(above);
-  };
+  }, [step]);
 
   useEffect(() => {
     if (!isActive) return;
@@ -105,7 +106,7 @@ export function GuidedTour({ isActive, onClose, onSwitchTab }: TourProps) {
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     const timer = setTimeout(measure, 150);
     return () => clearTimeout(timer);
-  }, [isActive, step]);
+  }, [isActive, step, measure, onSwitchTab]);
 
   useEffect(() => {
     if (!isActive) return;
@@ -113,7 +114,7 @@ export function GuidedTour({ isActive, onClose, onSwitchTab }: TourProps) {
     window.addEventListener('resize', onResize);
     window.addEventListener('scroll', onResize);
     return () => { window.removeEventListener('resize', onResize); window.removeEventListener('scroll', onResize); };
-  }, [isActive, step]);
+  }, [isActive, measure]);
 
   if (!isActive) return null;
 

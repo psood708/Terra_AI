@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { X, Sparkles, Zap, Trash2 } from 'lucide-react';
 import { useAppStore } from '@/store/appStore';
 import { api } from '@/lib/api';
@@ -33,8 +33,18 @@ export function AiConfigModal({ open, onClose }: Props) {
   const [apiKey, setApiKey] = useState(activeApiKey);
   const [testStatus, setTestStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [testing, setTesting] = useState(false);
-
-  useEffect(() => { if (open) { setProvider(activeProvider); setApiKey(activeApiKey); setTestStatus(null); } }, [open]);
+  // Track the previous `open` value to re-sync local form state from the store
+  // the moment the modal transitions closed -> open, without an effect (avoids
+  // a stale-content flash and the cascading-render footgun effects can cause).
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    if (open) {
+      setProvider(activeProvider);
+      setApiKey(activeApiKey);
+      setTestStatus(null);
+    }
+  }
 
   if (!open) return null;
 

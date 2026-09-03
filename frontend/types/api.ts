@@ -208,6 +208,11 @@ export interface RewardsResponse {
   retention_analytics: RetentionAnalytics;
 }
 
+export interface StreakClaimResponse extends RewardsResponse {
+  streak_claimed: boolean;
+  new_streak_days: number;
+}
+
 export interface DigitalTwin {
   name: string;
   target_goal: string;

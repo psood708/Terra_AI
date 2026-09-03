@@ -19,7 +19,7 @@ export function HabitsTab() {
   }, [currentPersona, currentStreak]);
 
   const handleClaimStreak = async () => {
-    const data = await api.claimStreak(currentPersona, currentStreak) as any;
+    const data = await api.claimStreak(currentPersona, currentStreak);
     if (data?.new_streak_days) { setStreak(data.new_streak_days); }
   };
 

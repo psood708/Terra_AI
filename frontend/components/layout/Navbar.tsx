@@ -31,6 +31,10 @@ export function Navbar({ onOpenAiModal, onStartTour, onRefresh }: NavbarProps) {
   const [mounted, setMounted] = useState(false);
   const { selectedTab, setSelectedTab, currentPersona, setCurrentPersona, activeApiKey, activeProvider } = useAppStore();
 
+  // next-themes' documented hydration-safe pattern: resolvedTheme is unknown
+  // during SSR, so we only render the theme icon after client mount to avoid
+  // a hydration mismatch. Single mount-only setState, not a cascading render.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
 
   const providerLabel = activeApiKey ? (activeProvider === 'openai' ? 'GPT-4o' : activeProvider === 'gemini' ? 'Gemini' : 'HF') : 'Local';

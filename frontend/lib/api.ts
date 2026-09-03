@@ -4,7 +4,7 @@ import type {
   BioAgeResponse, WhatIfInput, WhatIfResponse,
   OdinQueryRequest, OdinQueryResponse,
   TestConnectionRequest, TestConnectionResponse,
-  RewardsResponse, DigitalTwinsResponse, CausalImpactsResponse,
+  RewardsResponse, StreakClaimResponse, DigitalTwinsResponse, CausalImpactsResponse,
   Persona, PersonaId
 } from '@/types/api';
 
@@ -42,7 +42,7 @@ export const api = {
   testConnection: (body: TestConnectionRequest) => apiFetch<TestConnectionResponse>('/api/odin/test-connection', {
     method: 'POST', body: JSON.stringify(body),
   }),
-  claimStreak: (personaId: PersonaId, streak: number) => apiFetch('/api/rewards/claim-streak', {
+  claimStreak: (personaId: PersonaId, streak: number) => apiFetch<StreakClaimResponse>('/api/rewards/claim-streak', {
     method: 'POST',
     body: JSON.stringify({ persona_id: personaId, current_streak_days: streak }),
   }),

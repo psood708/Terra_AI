@@ -1,5 +1,5 @@
 'use client';
-import { HeartPulse, Activity, Moon, Hourglass, Footprints, Dna, PersonStanding } from 'lucide-react';
+import { HeartPulse, Activity, Moon, Hourglass, PersonStanding } from 'lucide-react';
 import { AgpChart } from '@/components/charts/AgpChart';
 import type { RecoveryResponse, AnomaliesResponse, WorkoutResponse, AgpResponse, BioAgeResponse, Persona } from '@/types/api';
 
@@ -32,7 +32,7 @@ function StatCard({ label, value, unit, sub, color, Icon }: {
   );
 }
 
-export function OverviewTab({ recovery, workout, agp, bioAge, persona, onAskOdin }: Props) {
+export function OverviewTab({ recovery, workout, agp, bioAge, onAskOdin }: Props) {
   const bb = recovery?.biometric_breakdown;
   const plan = workout?.prescribed_plan;
 
@@ -102,7 +102,7 @@ export function OverviewTab({ recovery, workout, agp, bioAge, persona, onAskOdin
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="text-[11px] uppercase tracking-wider text-cyan-400 font-semibold flex items-center gap-1.5">
-                <PersonStanding className="w-3.5 h-3.5" /> Today's Prescription
+                <PersonStanding className="w-3.5 h-3.5" /> Today&apos;s Prescription
               </span>
               {plan && (
                 <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
