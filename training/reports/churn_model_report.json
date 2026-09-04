@@ -1,0 +1,66 @@
+{
+  "dataset": {
+    "num_examples": 4160,
+    "positive_rate": 0.188,
+    "num_individuals_per_persona": 40,
+    "simulation_days": 240,
+    "temporal_split_cutoff_day": 156,
+    "num_train": 2880,
+    "num_test": 1280
+  },
+  "temporal_holdout": {
+    "logistic_regression": {
+      "roc_auc": 0.834,
+      "pr_auc": 0.461,
+      "precision_at_top_20pct": 0.469,
+      "recall_at_top_20pct": 0.44,
+      "f1_at_top_20pct": 0.454,
+      "brier_score": 0.1295
+    },
+    "hist_gradient_boosting": {
+      "roc_auc": 0.83,
+      "pr_auc": 0.469,
+      "precision_at_top_20pct": 0.453,
+      "recall_at_top_20pct": 0.425,
+      "f1_at_top_20pct": 0.439,
+      "brier_score": 0.1488
+    },
+    "existing_reward_optimizer_heuristic": {
+      "roc_auc": 0.514,
+      "pr_auc": 0.218,
+      "precision_at_top_20pct": 0.266,
+      "recall_at_top_20pct": 0.249,
+      "f1_at_top_20pct": 0.257
+    }
+  },
+  "leave_one_persona_out": {
+    "alex_longevity": {
+      "roc_auc": 0.831,
+      "pr_auc": 0.43,
+      "precision_at_top_20pct": 0.481,
+      "recall_at_top_20pct": 0.498,
+      "f1_at_top_20pct": 0.489
+    },
+    "sarah_athlete": {
+      "roc_auc": 0.814,
+      "pr_auc": 0.392,
+      "precision_at_top_20pct": 0.399,
+      "recall_at_top_20pct": 0.444,
+      "f1_at_top_20pct": 0.42
+    },
+    "marcus_metabolic": {
+      "roc_auc": 0.81,
+      "pr_auc": 0.453,
+      "precision_at_top_20pct": 0.447,
+      "recall_at_top_20pct": 0.433,
+      "f1_at_top_20pct": 0.44
+    },
+    "elena_cognitive": {
+      "roc_auc": 0.825,
+      "pr_auc": 0.422,
+      "precision_at_top_20pct": 0.399,
+      "recall_at_top_20pct": 0.466,
+      "f1_at_top_20pct": 0.43
+    }
+  }
+}

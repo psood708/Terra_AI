@@ -5,10 +5,10 @@ Day-30 and Day-90 user retention, habit formation, and engagement.
 Directly targets the Growth, Retention, and Product Development role qualifications.
 """
 
-from typing import Dict, Any, List
+from typing import Dict, Any
 import math
 from data.terra_schemas import UnifiedHealthProfile
-from config import PERSONAS
+from models.churn_model import estimate_live_churn_risk
 
 
 class RewardOptimizer:
@@ -30,9 +30,6 @@ class RewardOptimizer:
         Compute dynamic daily incentive points, streak multipliers,
         and retention risk assessment.
         """
-        cfg = PERSONAS.get(profile.persona_id, PERSONAS["alex_longevity"])
-        b = cfg["baseline"]
-
         achieved_actions = {}
         
         # 1. Step goal check (>8000 or > baseline)
@@ -85,8 +82,15 @@ class RewardOptimizer:
         streak_multiplier = min(2.5, 1.0 + (math.log(max(1, current_streak_days) + 1) * 0.35))
         final_points = int(round(total_base * streak_multiplier))
 
-        # Retention Churn Risk Model (Predicts Day-30 dropout likelihood)
-        # Based on habit completion ratio
+        # Heuristic churn-risk bucket, based on TODAY's habit completion
+        # ratio - a same-day proxy, not an actual prediction of future
+        # dropout. See models.churn_model for a real model trained to
+        # predict 30-day-ahead disengagement from engagement history
+        # (benchmarked against this exact heuristic in
+        # training/reports/churn_model_report.md: this heuristic scores
+        # ~0.51 AUC - essentially chance - at the task the ML model is
+        # actually built for, which makes sense: it was never designed to
+        # predict future engagement, only to bucket today's activity).
         completion_ratio = len(achieved_actions) / max(1, len(self.action_weights))
         if completion_ratio >= 0.6:
             churn_risk = "Low (< 5% probability)"
@@ -101,6 +105,13 @@ class RewardOptimizer:
             retention_index = 42.0
             nudge_strategy = "Streak-freeze salvation notification + zero-barrier win"
 
+        # Real, trained model estimate (see models/churn_model.py and
+        # training/train_churn_model.py) - scored against a representative
+        # simulated individual at this streak length, since no real
+        # per-user engagement history exists in this demo system. None if
+        # the model hasn't been trained yet (run: python -m training.train_churn_model).
+        ml_churn_estimate = estimate_live_churn_risk(profile.persona_id, current_streak_days)
+
         return {
             "persona_id": profile.persona_id,
             "streak_days": current_streak_days,
@@ -112,6 +123,13 @@ class RewardOptimizer:
                 "retention_index_score": retention_index,
                 "churn_risk_level": churn_risk,
                 "recommended_nudge_strategy": nudge_strategy,
-                "best_notification_window": "13:30 (Post-Lunch)" if "cgm_in_range_target" not in achieved_actions else "20:00 (Wind-down)"
+                "best_notification_window": "13:30 (Post-Lunch)" if "cgm_in_range_target" not in achieved_actions else "20:00 (Wind-down)",
+                "ml_model_churn_probability": ml_churn_estimate["churn_probability"] if ml_churn_estimate else None,
+                "ml_model_note": (
+                    "Logistic regression trained on simulated 30-day-ahead engagement outcomes; "
+                    "scored against a representative simulated individual at this streak length."
+                    if ml_churn_estimate else
+                    "Model not trained yet - run: python -m training.train_churn_model"
+                )
             }
         }

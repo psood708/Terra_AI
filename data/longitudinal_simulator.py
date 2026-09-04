@@ -105,12 +105,28 @@ def simulate_persona_history(
     start_date: Optional[datetime] = None,
 ) -> Tuple[List[SimulatedDay], List[InjectedEvent]]:
     """
-    Simulate `days` of autocorrelated daily telemetry for a persona, with
-    randomly injected multi-day physiological events. Returns the series
-    plus the ground-truth event log used to evaluate anomaly detectors.
+    Simulate `days` of autocorrelated daily telemetry for one of the four
+    fixed personas. Thin wrapper around simulate_from_params() using that
+    persona's own central parameters - see simulate_from_params() for the
+    version driven by per-individual sampled parameters (data/persona_archetypes.py),
+    needed to build a real population for the churn model in Phase 3.
+    """
+    params = PERSONA_METRIC_PARAMS.get(persona_id, PERSONA_METRIC_PARAMS["alex_longevity"])
+    return simulate_from_params(params, days=days, seed=seed, start_date=start_date)
+
+
+def simulate_from_params(
+    params: Dict[str, Dict[str, float]],
+    days: int = 180,
+    seed: Optional[int] = None,
+    start_date: Optional[datetime] = None,
+) -> Tuple[List[SimulatedDay], List[InjectedEvent]]:
+    """
+    Core simulation engine, parameterized directly rather than looked up by
+    persona_id - lets data/persona_archetypes.py drive many distinct
+    synthetic individuals through the same generative process.
     """
     rng = random.Random(seed)
-    params = PERSONA_METRIC_PARAMS.get(persona_id, PERSONA_METRIC_PARAMS["alex_longevity"])
     start_date = start_date or (datetime.now() - timedelta(days=days))
 
     state = {m: params[m]["mu"] for m in TRACKED_METRICS}
