@@ -28,3 +28,9 @@ models/artifacts/*.joblib
 # Frontend build/deps (frontend/ has its own .gitignore for these too)
 frontend/node_modules/
 frontend/.next/
+
+# Eval reports are timestamped per-run (regenerate via evals/run_eval.py
+# and evals/compare_reports.py) - unlike training/reports/, which use fixed
+# filenames and are meant to be committed as the current snapshot.
+evals/reports/*.json
+evals/reports/*.md

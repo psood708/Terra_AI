@@ -1,0 +1,258 @@
+[
+  {
+    "id": "recovery_metric__alex_longevity",
+    "persona_id": "alex_longevity",
+    "category": "direct_metric",
+    "query": "Why is my recovery score at this level today and what should I do about it?",
+    "grounding_metric": "recovery_score",
+    "expects_citation": true
+  },
+  {
+    "id": "recovery_metric__sarah_athlete",
+    "persona_id": "sarah_athlete",
+    "category": "direct_metric",
+    "query": "Why is my recovery score at this level today and what should I do about it?",
+    "grounding_metric": "recovery_score",
+    "expects_citation": true
+  },
+  {
+    "id": "recovery_metric__marcus_metabolic",
+    "persona_id": "marcus_metabolic",
+    "category": "direct_metric",
+    "query": "Why is my recovery score at this level today and what should I do about it?",
+    "grounding_metric": "recovery_score",
+    "expects_citation": true
+  },
+  {
+    "id": "recovery_metric__elena_cognitive",
+    "persona_id": "elena_cognitive",
+    "category": "direct_metric",
+    "query": "Why is my recovery score at this level today and what should I do about it?",
+    "grounding_metric": "recovery_score",
+    "expects_citation": true
+  },
+  {
+    "id": "workout_recommendation__alex_longevity",
+    "persona_id": "alex_longevity",
+    "category": "recommendation",
+    "query": "What workout should I do today given how I'm feeling?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "workout_recommendation__sarah_athlete",
+    "persona_id": "sarah_athlete",
+    "category": "recommendation",
+    "query": "What workout should I do today given how I'm feeling?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "workout_recommendation__marcus_metabolic",
+    "persona_id": "marcus_metabolic",
+    "category": "recommendation",
+    "query": "What workout should I do today given how I'm feeling?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "workout_recommendation__elena_cognitive",
+    "persona_id": "elena_cognitive",
+    "category": "recommendation",
+    "query": "What workout should I do today given how I'm feeling?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "citation_seeking_hrv__alex_longevity",
+    "persona_id": "alex_longevity",
+    "category": "citation_seeking",
+    "query": "Can you point me to the research behind using HRV to guide training readiness?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "citation_seeking_hrv__sarah_athlete",
+    "persona_id": "sarah_athlete",
+    "category": "citation_seeking",
+    "query": "Can you point me to the research behind using HRV to guide training readiness?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "citation_seeking_hrv__marcus_metabolic",
+    "persona_id": "marcus_metabolic",
+    "category": "citation_seeking",
+    "query": "Can you point me to the research behind using HRV to guide training readiness?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "citation_seeking_hrv__elena_cognitive",
+    "persona_id": "elena_cognitive",
+    "category": "citation_seeking",
+    "query": "Can you point me to the research behind using HRV to guide training readiness?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "glucose_metric__alex_longevity",
+    "persona_id": "alex_longevity",
+    "category": "direct_metric",
+    "query": "How is my blood glucose looking today, and should I be concerned?",
+    "grounding_metric": "avg_glucose",
+    "expects_citation": true
+  },
+  {
+    "id": "glucose_metric__sarah_athlete",
+    "persona_id": "sarah_athlete",
+    "category": "direct_metric",
+    "query": "How is my blood glucose looking today, and should I be concerned?",
+    "grounding_metric": "avg_glucose",
+    "expects_citation": true
+  },
+  {
+    "id": "glucose_metric__marcus_metabolic",
+    "persona_id": "marcus_metabolic",
+    "category": "direct_metric",
+    "query": "How is my blood glucose looking today, and should I be concerned?",
+    "grounding_metric": "avg_glucose",
+    "expects_citation": true
+  },
+  {
+    "id": "glucose_metric__elena_cognitive",
+    "persona_id": "elena_cognitive",
+    "category": "direct_metric",
+    "query": "How is my blood glucose looking today, and should I be concerned?",
+    "grounding_metric": "avg_glucose",
+    "expects_citation": true
+  },
+  {
+    "id": "longevity_recommendation__alex_longevity",
+    "persona_id": "alex_longevity",
+    "category": "recommendation",
+    "query": "Am I on track for my longevity and biological age goals?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "longevity_recommendation__sarah_athlete",
+    "persona_id": "sarah_athlete",
+    "category": "recommendation",
+    "query": "Am I on track for my longevity and biological age goals?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "longevity_recommendation__marcus_metabolic",
+    "persona_id": "marcus_metabolic",
+    "category": "recommendation",
+    "query": "Am I on track for my longevity and biological age goals?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "longevity_recommendation__elena_cognitive",
+    "persona_id": "elena_cognitive",
+    "category": "recommendation",
+    "query": "Am I on track for my longevity and biological age goals?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "out_of_scope_weather__alex_longevity",
+    "persona_id": "alex_longevity",
+    "category": "out_of_scope",
+    "query": "What's the weather like where I am today?",
+    "grounding_metric": null,
+    "expects_citation": false
+  },
+  {
+    "id": "out_of_scope_weather__sarah_athlete",
+    "persona_id": "sarah_athlete",
+    "category": "out_of_scope",
+    "query": "What's the weather like where I am today?",
+    "grounding_metric": null,
+    "expects_citation": false
+  },
+  {
+    "id": "out_of_scope_weather__marcus_metabolic",
+    "persona_id": "marcus_metabolic",
+    "category": "out_of_scope",
+    "query": "What's the weather like where I am today?",
+    "grounding_metric": null,
+    "expects_citation": false
+  },
+  {
+    "id": "out_of_scope_weather__elena_cognitive",
+    "persona_id": "elena_cognitive",
+    "category": "out_of_scope",
+    "query": "What's the weather like where I am today?",
+    "grounding_metric": null,
+    "expects_citation": false
+  },
+  {
+    "id": "missing_data_blood_pressure_trend__alex_longevity",
+    "persona_id": "alex_longevity",
+    "category": "missing_data",
+    "query": "What has my blood pressure trend looked like over the last year?",
+    "grounding_metric": null,
+    "expects_citation": false
+  },
+  {
+    "id": "missing_data_blood_pressure_trend__sarah_athlete",
+    "persona_id": "sarah_athlete",
+    "category": "missing_data",
+    "query": "What has my blood pressure trend looked like over the last year?",
+    "grounding_metric": null,
+    "expects_citation": false
+  },
+  {
+    "id": "missing_data_blood_pressure_trend__marcus_metabolic",
+    "persona_id": "marcus_metabolic",
+    "category": "missing_data",
+    "query": "What has my blood pressure trend looked like over the last year?",
+    "grounding_metric": null,
+    "expects_citation": false
+  },
+  {
+    "id": "missing_data_blood_pressure_trend__elena_cognitive",
+    "persona_id": "elena_cognitive",
+    "category": "missing_data",
+    "query": "What has my blood pressure trend looked like over the last year?",
+    "grounding_metric": null,
+    "expects_citation": false
+  },
+  {
+    "id": "citation_seeking_zone2__alex_longevity",
+    "persona_id": "alex_longevity",
+    "category": "citation_seeking",
+    "query": "What does the science say about Zone 2 training and mitochondrial adaptation?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "citation_seeking_zone2__sarah_athlete",
+    "persona_id": "sarah_athlete",
+    "category": "citation_seeking",
+    "query": "What does the science say about Zone 2 training and mitochondrial adaptation?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "citation_seeking_zone2__marcus_metabolic",
+    "persona_id": "marcus_metabolic",
+    "category": "citation_seeking",
+    "query": "What does the science say about Zone 2 training and mitochondrial adaptation?",
+    "grounding_metric": null,
+    "expects_citation": true
+  },
+  {
+    "id": "citation_seeking_zone2__elena_cognitive",
+    "persona_id": "elena_cognitive",
+    "category": "citation_seeking",
+    "query": "What does the science say about Zone 2 training and mitochondrial adaptation?",
+    "grounding_metric": null,
+    "expects_citation": true
+  }
+]

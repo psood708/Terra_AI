@@ -1,0 +1,482 @@
+[
+  {
+    "id": "buchheit_2014_hrv_training",
+    "topic_tags": ["hrv", "training_readiness"],
+    "title": "Monitoring training status with HR measures: do all roads lead to Rome?",
+    "authors": "Buchheit, M.",
+    "year": 2014,
+    "journal": "Frontiers in Physiology",
+    "doi_or_url": "10.3389/fphys.2014.00073",
+    "finding_summary": "Reviews heart-rate-derived monitoring tools (resting/submaximal/recovery HR and HRV) for tracking training status, concluding most inconsistent findings in the literature stem from methodological differences rather than the measures themselves."
+  },
+  {
+    "id": "san_millan_brooks_2018_metabolic_flexibility",
+    "topic_tags": ["metabolic_flexibility", "zone2_training"],
+    "title": "Assessment of Metabolic Flexibility by Means of Measuring Blood Lactate, Fat, and Carbohydrate Oxidation Responses to Exercise in Professional Endurance Athletes and Less-Fit Individuals",
+    "authors": "San-Millán, I. & Brooks, G.A.",
+    "year": 2018,
+    "journal": "Sports Medicine",
+    "doi_or_url": "10.1007/s40279-017-0751-x",
+    "finding_summary": "Compared substrate oxidation and lactate responses across elite cyclists, moderately active people, and people with metabolic syndrome, showing fitter individuals sustain higher fat oxidation and delay the crossover to carbohydrate use, while metabolic syndrome is marked by early 'metabolic inflexibility.'"
+  },
+  {
+    "id": "battelino_2019_time_in_range",
+    "topic_tags": ["cgm", "glycemic_variability"],
+    "title": "Clinical Targets for Continuous Glucose Monitoring Data Interpretation: Recommendations From the International Consensus on Time in Range",
+    "authors": "Battelino, T., et al.",
+    "year": 2019,
+    "journal": "Diabetes Care",
+    "doi_or_url": "https://diabetesjournals.org/care/article/42/8/1593/36184",
+    "finding_summary": "International expert consensus establishing standardized CGM metrics and targets, including >70% time-in-range (70-180 mg/dL), <4% time-below-range, and <25% time-above-range, for clinical care and trials."
+  },
+  {
+    "id": "gabbett_2016_training_injury_paradox",
+    "topic_tags": ["overtraining", "acwr"],
+    "title": "The training-injury prevention paradox: should athletes be training smarter and harder?",
+    "authors": "Gabbett, T.J.",
+    "year": 2016,
+    "journal": "British Journal of Sports Medicine",
+    "doi_or_url": "10.1136/bjsports-2015-095788",
+    "finding_summary": "Argues that appropriately progressed high training loads build protective physical capacity, whereas rapid, uncontrolled spikes in workload (not high load per se) are what drive injury risk."
+  },
+  {
+    "id": "task_force_1996_hrv_standards",
+    "topic_tags": ["hrv"],
+    "title": "Heart rate variability: Standards of measurement, physiological interpretation, and clinical use",
+    "authors": "Task Force of the European Society of Cardiology and the North American Society of Pacing and Electrophysiology",
+    "year": 1996,
+    "journal": "Circulation",
+    "doi_or_url": "10.1161/01.CIR.93.5.1043",
+    "finding_summary": "Foundational standardization document defining time-domain and frequency-domain HRV metrics, recording protocols, and physiological/clinical interpretation underlying nearly all subsequent HRV research and consumer wearables."
+  },
+  {
+    "id": "shaffer_ginsberg_2017_hrv_norms",
+    "topic_tags": ["hrv"],
+    "title": "An Overview of Heart Rate Variability Metrics and Norms",
+    "authors": "Shaffer, F. & Ginsberg, J.P.",
+    "year": 2017,
+    "journal": "Frontiers in Public Health",
+    "doi_or_url": "10.3389/fpubh.2017.00258",
+    "finding_summary": "Comprehensive review of HRV metrics (RMSSD, SDNN, LF/HF, etc.), their physiological mechanisms, and normative ranges across short-term, ultra-short-term, and 24-hour recordings."
+  },
+  {
+    "id": "plews_2013_hrv_elite_endurance",
+    "topic_tags": ["hrv", "training_readiness"],
+    "title": "Training Adaptation and Heart Rate Variability in Elite Endurance Athletes: Opening the Door to Effective Monitoring",
+    "authors": "Plews, D.J., Laursen, P.B., Stanley, J., Kilding, A.E. & Buchheit, M.",
+    "year": 2013,
+    "journal": "Sports Medicine",
+    "doi_or_url": "10.1007/s40279-013-0071-8",
+    "finding_summary": "Reviews how vagally-mediated HRV changes track training adaptation, noting elite athletes show more equivocal HRV responses than recreational athletes, so practical monitoring rules for elites are still being established."
+  },
+  {
+    "id": "stanley_2013_parasympathetic_reactivation",
+    "topic_tags": ["hrv", "training_readiness"],
+    "title": "Cardiac Parasympathetic Reactivation Following Exercise: Implications for Training Prescription",
+    "authors": "Stanley, J., Peake, J.M. & Buchheit, M.",
+    "year": 2013,
+    "journal": "Sports Medicine",
+    "doi_or_url": "10.1007/s40279-013-0083-4",
+    "finding_summary": "Reviews how post-exercise vagal (parasympathetic) reactivation, trackable via HRV, reflects individualized recovery kinetics and can inform readiness for subsequent training."
+  },
+  {
+    "id": "flatt_esco_2016_hrv_soccer",
+    "topic_tags": ["hrv", "training_readiness"],
+    "title": "Evaluating Individual Training Adaptation With Smartphone-Derived Heart Rate Variability in a Collegiate Female Soccer Team",
+    "authors": "Flatt, A.A. & Esco, M.R.",
+    "year": 2016,
+    "journal": "Journal of Strength and Conditioning Research",
+    "doi_or_url": "https://pubmed.ncbi.nlm.nih.gov/26200192/",
+    "finding_summary": "Found a reduction in week-to-week coefficient of variation of smartphone-derived HRV (RMSSD) during early-season training corresponded with improved fitness test performance, supporting smartphone HRV as a practical team-sport monitoring tool."
+  },
+  {
+    "id": "tononi_cirelli_2014_sleep_plasticity",
+    "topic_tags": ["sleep_architecture"],
+    "title": "Sleep and the Price of Plasticity: From Synaptic and Cellular Homeostasis to Memory Consolidation and Integration",
+    "authors": "Tononi, G. & Cirelli, C.",
+    "year": 2014,
+    "journal": "Neuron",
+    "doi_or_url": "10.1016/j.neuron.2013.12.025",
+    "finding_summary": "Proposes the synaptic homeostasis hypothesis (SHY): waking strengthens synaptic connections broadly, and sleep - especially slow-wave sleep - renormalizes this strength, preserving learning capacity and cellular energy balance."
+  },
+  {
+    "id": "diekelmann_born_2010_memory_function_sleep",
+    "topic_tags": ["sleep_architecture", "sleep_memory"],
+    "title": "The Memory Function of Sleep",
+    "authors": "Diekelmann, S. & Born, J.",
+    "year": 2010,
+    "journal": "Nature Reviews Neuroscience",
+    "doi_or_url": "10.1038/nrn2762",
+    "finding_summary": "Reviews evidence that slow-wave sleep and REM sleep support distinct, complementary stages of memory consolidation (systems vs. synaptic), actively reorganizing new memories rather than passively protecting them."
+  },
+  {
+    "id": "xie_2013_glymphatic_clearance",
+    "topic_tags": ["sleep_architecture"],
+    "title": "Sleep Drives Metabolite Clearance from the Adult Brain",
+    "authors": "Xie, L., Kang, H., Xu, Q., Chen, M.J., et al.",
+    "year": 2013,
+    "journal": "Science",
+    "doi_or_url": "10.1126/science.1241224",
+    "finding_summary": "Using two-photon imaging in mice, showed sleep (and anesthesia) increase brain interstitial space by ~60%, driving a large increase in glymphatic clearance of metabolic waste compared to the awake state."
+  },
+  {
+    "id": "stickgold_2005_sleep_memory_consolidation",
+    "topic_tags": ["sleep_memory"],
+    "title": "Sleep-Dependent Memory Consolidation",
+    "authors": "Stickgold, R.",
+    "year": 2005,
+    "journal": "Nature",
+    "doi_or_url": "10.1038/nature04286",
+    "finding_summary": "Review arguing offline reprocessing of memories during sleep is a distinct, necessary component of memory formation, not merely passive protection from interference, across declarative and procedural memory."
+  },
+  {
+    "id": "walker_stickgold_2006_sleep_memory_plasticity",
+    "topic_tags": ["sleep_memory"],
+    "title": "Sleep, Memory, and Plasticity",
+    "authors": "Walker, M.P. & Stickgold, R.",
+    "year": 2006,
+    "journal": "Annual Review of Psychology",
+    "doi_or_url": "10.1146/annurev.psych.56.091103.070307",
+    "finding_summary": "Comprehensive review proposing sleep contributes actively to memory encoding, consolidation, and reconsolidation, and broader brain plasticity. Replaces a fabricated citation ('Walker & Stickgold 2017, Nature Neuroscience') that was found in this project's original citation list and does not actually exist - this is believed to be the real paper it was garbled from."
+  },
+  {
+    "id": "krause_2017_sleep_deprived_brain",
+    "topic_tags": ["sleep_architecture", "sleep_memory"],
+    "title": "The Sleep-Deprived Human Brain",
+    "authors": "Krause, A.J., Simon, E.B., Mander, B.A., Greer, S.M., Saletin, J.M., Goldstein-Piekarski, A.N. & Walker, M.P.",
+    "year": 2017,
+    "journal": "Nature Reviews Neuroscience",
+    "doi_or_url": "10.1038/nrn.2017.55",
+    "finding_summary": "Neuroimaging-based review showing sleep deprivation bidirectionally disrupts attention/working memory, amplifies negative and blunts positive emotional reactivity, and impairs hippocampal-dependent learning. Also believed to be part of the source material a fabricated citation in this project's original citation list was garbled from."
+  },
+  {
+    "id": "danne_2017_cgm_consensus",
+    "topic_tags": ["cgm"],
+    "title": "International Consensus on Use of Continuous Glucose Monitoring",
+    "authors": "Danne, T., Nimri, R., Battelino, T., Bergenstal, R.M., et al.",
+    "year": 2017,
+    "journal": "Diabetes Care",
+    "doi_or_url": "10.2337/dc17-1600",
+    "finding_summary": "Expert consensus establishing standardized CGM terminology and metrics (e.g., time-in-range, glucose variability) to address the limitations of HbA1c and self-monitored blood glucose alone."
+  },
+  {
+    "id": "hall_2018_glucotypes",
+    "topic_tags": ["cgm", "glycemic_variability"],
+    "title": "Glucotypes Reveal New Patterns of Glucose Dysregulation",
+    "authors": "Hall, H., Perelman, D., Breschi, A., Limcaoco, P., Kellogg, R., McLaughlin, T. & Snyder, M.",
+    "year": 2018,
+    "journal": "PLOS Biology",
+    "doi_or_url": "10.1371/journal.pbio.2005143",
+    "finding_summary": "Using CGM in non-diabetic individuals, identified distinct 'glucotype' patterns of postprandial glucose response, finding many people not flagged as prediabetic by standard tests nonetheless show prediabetes-like glucose spikes."
+  },
+  {
+    "id": "bergenstal_2018_gmi",
+    "topic_tags": ["cgm"],
+    "title": "Glucose Management Indicator (GMI): A New Term for Estimating A1C From Continuous Glucose Monitoring",
+    "authors": "Bergenstal, R.M., et al.",
+    "year": 2018,
+    "journal": "Diabetes Care",
+    "doi_or_url": "https://pubmed.ncbi.nlm.nih.gov/30224348/",
+    "finding_summary": "Introduces the Glucose Management Indicator (GMI), a formula converting CGM-derived mean glucose into an estimated A1C, replacing the earlier 'estimated A1C' terminology to avoid confusion with lab-measured HbA1c."
+  },
+  {
+    "id": "rodbard_2009_glycemic_variability",
+    "topic_tags": ["cgm", "glycemic_variability"],
+    "title": "Interpretation of Continuous Glucose Monitoring Data: Glycemic Variability and Quality of Glycemic Control",
+    "authors": "Rodbard, D.",
+    "year": 2009,
+    "journal": "Diabetes Technology & Therapeutics",
+    "doi_or_url": "10.1089/dia.2008.0132",
+    "finding_summary": "Proposes and reviews quantitative measures of glycemic variability and control quality from CGM data (SD-based measures, GRADE, HBGI/LBGI, ADRR, time-in-range), laying groundwork for standardized CGM analytics."
+  },
+  {
+    "id": "mandsager_2018_crf_mortality",
+    "topic_tags": ["vo2max", "mortality_risk"],
+    "title": "Association of Cardiorespiratory Fitness With Long-term Mortality Among Adults Undergoing Exercise Treadmill Testing",
+    "authors": "Mandsager, K., Harb, S., Cremer, P., et al.",
+    "year": 2018,
+    "journal": "JAMA Network Open",
+    "doi_or_url": "10.1001/jamanetworkopen.2018.3605",
+    "finding_summary": "In >122,000 patients undergoing treadmill testing, cardiorespiratory fitness was inversely associated with all-cause mortality with no observed upper limit of benefit."
+  },
+  {
+    "id": "kodama_2009_crf_meta_analysis",
+    "topic_tags": ["vo2max", "mortality_risk"],
+    "title": "Cardiorespiratory Fitness as a Quantitative Predictor of All-Cause Mortality and Cardiovascular Events in Healthy Men and Women: A Meta-Analysis",
+    "authors": "Kodama, S., Saito, K., Tanaka, S., et al.",
+    "year": 2009,
+    "journal": "JAMA",
+    "doi_or_url": "10.1001/jama.2009.681",
+    "finding_summary": "Meta-analysis of cohort studies showing each 1-MET increase in cardiorespiratory fitness is associated with meaningfully lower risk of all-cause mortality and cardiovascular events in healthy adults."
+  },
+  {
+    "id": "ross_2016_aha_fitness_vital_sign",
+    "topic_tags": ["vo2max", "cvd_risk"],
+    "title": "Importance of Assessing Cardiorespiratory Fitness in Clinical Practice: A Case for Fitness as a Clinical Vital Sign",
+    "authors": "Ross, R., Blair, S.N., Arena, R., et al. (American Heart Association Scientific Statement)",
+    "year": 2016,
+    "journal": "Circulation",
+    "doi_or_url": "10.1161/CIR.0000000000000461",
+    "finding_summary": "AHA scientific statement arguing cardiorespiratory fitness should be measured routinely in clinical practice given its independent prognostic value for cardiovascular and all-cause mortality beyond traditional risk factors."
+  },
+  {
+    "id": "blair_1989_fitness_mortality",
+    "topic_tags": ["vo2max", "mortality_risk"],
+    "title": "Physical Fitness and All-Cause Mortality: A Prospective Study of Healthy Men and Women",
+    "authors": "Blair, S.N., Kohl, H.W. III, Paffenbarger, R.S. Jr., Clark, D.G., Cooper, K.H. & Gibbons, L.W.",
+    "year": 1989,
+    "journal": "JAMA",
+    "doi_or_url": "https://pubmed.ncbi.nlm.nih.gov/2795824/",
+    "finding_summary": "Landmark cohort study showing a strong graded inverse relationship between treadmill-measured fitness and all-cause mortality in both men and women, largely via lower cardiovascular and cancer deaths."
+  },
+  {
+    "id": "fox_2007_resting_hr_cvd",
+    "topic_tags": ["resting_heart_rate", "cvd_risk"],
+    "title": "Resting Heart Rate in Cardiovascular Disease",
+    "authors": "Fox, K., Borer, J.S., Camm, A.J., et al.",
+    "year": 2007,
+    "journal": "Journal of the American College of Cardiology",
+    "doi_or_url": "10.1016/j.jacc.2007.04.079",
+    "finding_summary": "Review concluding resting heart rate is an independent predictor of cardiovascular and all-cause mortality, with continuously increasing risk for resting HR above 60 bpm."
+  },
+  {
+    "id": "jensen_2013_copenhagen_rhr_mortality",
+    "topic_tags": ["resting_heart_rate", "cvd_risk"],
+    "title": "Elevated Resting Heart Rate, Physical Fitness and All-Cause Mortality: A 16-Year Follow-Up in the Copenhagen Male Study",
+    "authors": "Jensen, M.T., Suadicani, P., Hein, H.O. & Gyntelberg, F.",
+    "year": 2013,
+    "journal": "Heart",
+    "doi_or_url": "https://pubmed.ncbi.nlm.nih.gov/23595657/",
+    "finding_summary": "16-year follow-up of ~2,800 men found resting heart rate associated with all-cause mortality in a graded, dose-dependent manner (16% higher mortality per 10 bpm) even after adjusting for fitness and activity."
+  },
+  {
+    "id": "aune_2017_rhr_meta_analysis",
+    "topic_tags": ["resting_heart_rate", "cvd_risk"],
+    "title": "Resting Heart Rate and the Risk of Cardiovascular Disease, Total Cancer, and All-Cause Mortality - A Systematic Review and Dose-Response Meta-Analysis of Prospective Studies",
+    "authors": "Aune, D., Sen, A., Ó Hartaigh, B., et al.",
+    "year": 2017,
+    "journal": "Nutrition, Metabolism and Cardiovascular Diseases",
+    "doi_or_url": "https://pubmed.ncbi.nlm.nih.gov/28552551/",
+    "finding_summary": "Dose-response meta-analysis of 87 studies found a positive, roughly linear association between resting heart rate and risk of coronary heart disease, heart failure, stroke, cardiovascular disease, and all-cause mortality."
+  },
+  {
+    "id": "jouven_2005_hr_profile_sudden_death",
+    "topic_tags": ["resting_heart_rate", "cvd_risk"],
+    "title": "Heart-Rate Profile during Exercise as a Predictor of Sudden Death",
+    "authors": "Jouven, X., Empana, J.P., Schwartz, P.J., Desnos, M., Courbon, D. & Ducimetière, P.",
+    "year": 2005,
+    "journal": "New England Journal of Medicine",
+    "doi_or_url": "10.1056/NEJMoa043012",
+    "finding_summary": "In over 5,700 asymptomatic men followed for 23 years, both a high resting heart rate and a small heart-rate increase during exercise independently predicted sudden cardiac death."
+  },
+  {
+    "id": "hulin_2014_acute_workload_injury",
+    "topic_tags": ["overtraining", "acwr"],
+    "title": "Spikes in Acute Workload Are Associated with Increased Injury Risk in Elite Cricket Fast Bowlers",
+    "authors": "Hulin, B.T., Gabbett, T.J., Blanch, P., Chapman, P., Bailey, D. & Orchard, J.W.",
+    "year": 2014,
+    "journal": "British Journal of Sports Medicine",
+    "doi_or_url": "10.1136/bjsports-2013-092524",
+    "finding_summary": "In elite fast bowlers, a large negative training-stress balance (a spike in acute workload relative to chronic workload) was associated with 2-4x higher injury risk in the following week."
+  },
+  {
+    "id": "meeusen_2013_overtraining_consensus",
+    "topic_tags": ["overtraining"],
+    "title": "Prevention, Diagnosis, and Treatment of the Overtraining Syndrome: Joint Consensus Statement of the European College of Sport Science and the American College of Sports Medicine",
+    "authors": "Meeusen, R., Duclos, M., Foster, C., et al.",
+    "year": 2013,
+    "journal": "Medicine & Science in Sports & Exercise",
+    "doi_or_url": "10.1249/MSS.0b013e318279a10a",
+    "finding_summary": "Joint ECSS/ACSM consensus statement defining functional overreaching, non-functional overreaching, and overtraining syndrome as a continuum, and reviewing diagnostic markers and prevention strategies."
+  },
+  {
+    "id": "soligard_2016_ioc_load_consensus",
+    "topic_tags": ["overtraining", "acwr"],
+    "title": "How Much Is Too Much? (Part 1) International Olympic Committee Consensus Statement on Load in Sport and Risk of Injury",
+    "authors": "Soligard, T., Schwellnus, M., Alonso, J.M., et al.",
+    "year": 2016,
+    "journal": "British Journal of Sports Medicine",
+    "doi_or_url": "10.1136/bjsports-2016-096581",
+    "finding_summary": "IOC consensus statement synthesizing evidence that both very low and very high training loads, and especially rapid spikes in load, increase injury risk, while adequate chronic load can be protective."
+  },
+  {
+    "id": "halson_2014_training_load_fatigue",
+    "topic_tags": ["overtraining", "training_load"],
+    "title": "Monitoring Training Load to Understand Fatigue in Athletes",
+    "authors": "Halson, S.L.",
+    "year": 2014,
+    "journal": "Sports Medicine",
+    "doi_or_url": "10.1007/s40279-014-0253-z",
+    "finding_summary": "Reviews external (power, GPS) and internal (RPE, heart rate, HRV) methods of quantifying training load, and how monitoring these can help identify fatigue and reduce risk of non-functional overreaching, illness, or injury."
+  },
+  {
+    "id": "facer_childs_2015_circadian_athletes",
+    "topic_tags": ["circadian_rhythm"],
+    "title": "The Impact of Circadian Phenotype and Time since Awakening on Diurnal Performance in Athletes",
+    "authors": "Facer-Childs, E. & Brandstaetter, R.",
+    "year": 2015,
+    "journal": "Current Biology",
+    "doi_or_url": "10.1016/j.cub.2014.12.036",
+    "finding_summary": "Found time since wake (not absolute time of day) predicted peak physical performance, and athletes tested during their chronotype-aligned peak window scored 5-6% higher on strength, speed, and reaction-time tests."
+  },
+  {
+    "id": "roenneberg_merrow_2016_circadian_health",
+    "topic_tags": ["circadian_rhythm"],
+    "title": "The Circadian Clock and Human Health",
+    "authors": "Roenneberg, T. & Merrow, M.",
+    "year": 2016,
+    "journal": "Current Biology",
+    "doi_or_url": "10.1016/j.cub.2016.04.011",
+    "finding_summary": "Review of chronotype variation ('larks' to 'owls'), how modern indoor/artificial-light environments shift people toward later chronotypes, and how circadian misalignment links to a range of health problems."
+  },
+  {
+    "id": "vitale_weydahl_2017_chronotype_sport",
+    "topic_tags": ["circadian_rhythm"],
+    "title": "Chronotype, Physical Activity, and Sport Performance: A Systematic Review",
+    "authors": "Vitale, J.A. & Weydahl, A.",
+    "year": 2017,
+    "journal": "Sports Medicine",
+    "doi_or_url": "10.1007/s40279-017-0741-z",
+    "finding_summary": "Systematic review finding morning-type individuals tend to perform better earlier in the day and evening-types later, with circadian rhythms affecting many sport-relevant physiological variables."
+  },
+  {
+    "id": "panda_2016_circadian_metabolism",
+    "topic_tags": ["circadian_rhythm", "metabolic_flexibility"],
+    "title": "Circadian Physiology of Metabolism",
+    "authors": "Panda, S.",
+    "year": 2016,
+    "journal": "Science",
+    "doi_or_url": "10.1126/science.aah4967",
+    "finding_summary": "Review of how cell-autonomous circadian clocks interact with light-dark and feeding-fasting cycles to drive ~24-hour rhythms in gene expression and metabolism, and how chronic circadian disruption raises metabolic disease risk."
+  },
+  {
+    "id": "ebrahim_2013_alcohol_sleep",
+    "topic_tags": ["alcohol_sleep", "sleep_architecture"],
+    "title": "Alcohol and Sleep I: Effects on Normal Sleep",
+    "authors": "Ebrahim, I.O., Shapiro, C.M., Williams, A.J. & Fenwick, P.B.",
+    "year": 2013,
+    "journal": "Alcoholism: Clinical and Experimental Research",
+    "doi_or_url": "10.1111/acer.12006",
+    "finding_summary": "Systematic review finding alcohol reduces sleep-onset latency and consolidates first-half sleep, but increases sleep disruption and reduces REM sleep in the second half of the night, dose-dependently."
+  },
+  {
+    "id": "clark_landolt_2017_caffeine_sleep",
+    "topic_tags": ["caffeine_sleep", "sleep_architecture"],
+    "title": "Coffee, Caffeine, and Sleep: A Systematic Review of Epidemiological Studies and Randomized Controlled Trials",
+    "authors": "Clark, I. & Landolt, H.P.",
+    "year": 2017,
+    "journal": "Sleep Medicine Reviews",
+    "doi_or_url": "10.1016/j.smrv.2016.01.006",
+    "finding_summary": "Systematic review finding caffeine reliably prolongs sleep latency, reduces total sleep time and sleep efficiency, reduces slow-wave sleep, and worsens perceived sleep quality."
+  },
+  {
+    "id": "pietila_2018_alcohol_hrv",
+    "topic_tags": ["alcohol_sleep", "hrv"],
+    "title": "Acute Effect of Alcohol Intake on Cardiovascular Autonomic Regulation During the First Hours of Sleep in a Large Real-World Sample of Finnish Employees: Observational Study",
+    "authors": "Pietilä, J., Helander, E., Korhonen, I., Myllymäki, T., Kujala, U.M. & Lindholm, H.",
+    "year": 2018,
+    "journal": "JMIR Mental Health",
+    "doi_or_url": "https://mental.jmir.org/2018/1/e23/",
+    "finding_summary": "In >4,000 Finnish employees wearing continuous HR monitors, alcohol intake dose-dependently disturbed nocturnal cardiovascular autonomic regulation (elevated HR, suppressed HRV) during the first hours of sleep."
+  },
+  {
+    "id": "rauh_2006_caffeine_hrv",
+    "topic_tags": ["caffeine_sleep", "hrv"],
+    "title": "Acute Effects of Caffeine on Heart Rate Variability in Habitual Caffeine Consumers",
+    "authors": "Rauh, R., Burkert, M., Siepmann, M. & Mueck-Weymann, M.",
+    "year": 2006,
+    "journal": "Clinical Physiology and Functional Imaging",
+    "doi_or_url": "10.1111/j.1475-097X.2006.00663.x",
+    "finding_summary": "Randomized double-blind crossover study in habitual caffeine consumers found 100-200mg caffeine doses did not significantly alter resting HRV within 90 minutes of ingestion, suggesting tolerance in regular users."
+  },
+  {
+    "id": "de_zambotti_2019_oura_psg",
+    "topic_tags": ["wearable_validity", "sleep_architecture"],
+    "title": "The Sleep of the Ring: Comparison of the ŌURA Sleep Tracker Against Polysomnography",
+    "authors": "de Zambotti, M., Rosas, L., Colrain, I.M. & Baker, F.C.",
+    "year": 2019,
+    "journal": "Behavioral Sleep Medicine",
+    "doi_or_url": "10.1080/15402002.2017.1300587",
+    "finding_summary": "Comparing the Oura ring to lab polysomnography in young adults, found no significant differences in total sleep time, sleep onset latency, or wake-after-sleep-onset, but the ring underestimated deep sleep and overestimated light/REM sleep."
+  },
+  {
+    "id": "bellenger_2021_whoop_validation",
+    "topic_tags": ["wearable_validity", "hrv"],
+    "title": "Wrist-Based Photoplethysmography Assessment of Heart Rate and Heart Rate Variability: Validation of WHOOP",
+    "authors": "Bellenger, C.R., Miller, D.J., Halson, S.L., Roach, G.D. & Sargent, C.",
+    "year": 2021,
+    "journal": "Sensors",
+    "doi_or_url": "10.3390/s21103571",
+    "finding_summary": "Validated WHOOP's PPG-derived heart rate and HRV against ECG, finding measurement error was within the smallest worthwhile change typically used for training monitoring purposes."
+  },
+  {
+    "id": "schyvens_2024_wearables_sleep_psg",
+    "topic_tags": ["wearable_validity", "sleep_architecture"],
+    "title": "Accuracy of Fitbit Charge 4, Garmin Vivosmart 4, and WHOOP Versus Polysomnography: Systematic Review",
+    "authors": "Schyvens, A.M., Van Oost, N.C., Aerts, J.M., Masci, F., Peters, B., Neven, A., Dirix, H., Wets, G., Ross, V. & Verbraecken, J.",
+    "year": 2024,
+    "journal": "JMIR mHealth and uHealth",
+    "doi_or_url": "10.2196/52192",
+    "finding_summary": "Systematic review of 8 studies found WHOOP had the least disagreement with polysomnography for total sleep time, light sleep, and deep sleep, but the largest disagreement for REM sleep; Fitbit Charge 4 and Garmin Vivosmart 4 showed moderate accuracy."
+  },
+  {
+    "id": "bunn_2018_wearable_activity_review",
+    "topic_tags": ["wearable_validity"],
+    "title": "Current State of Commercial Wearable Technology in Physical Activity Monitoring 2015-2017",
+    "authors": "Bunn, J., Navalta, J.W., Fountaine, C.J. & Reece, J.D.",
+    "year": 2018,
+    "journal": "International Journal of Exercise Science",
+    "doi_or_url": "https://digitalcommons.wku.edu/ijes/vol11/iss7/1/",
+    "finding_summary": "Systematic review of consumer wearables for steps, heart rate, and energy expenditure found devices generally underestimate energy expenditure (more so at higher intensities) with accuracy varying by activity type."
+  },
+  {
+    "id": "bonneval_2025_apple_watch_hrv",
+    "topic_tags": ["wearable_validity", "hrv"],
+    "title": "Validity of Heart Rate Variability Measured with Apple Watch Series 6 Compared to Laboratory Measures",
+    "authors": "Bonneval, L., Wing, D., Sharp, S., Tristao Parra, M., Moran, R., LaCroix, A. & Godino, J.",
+    "year": 2025,
+    "journal": "Sensors",
+    "doi_or_url": "10.3390/s25082380",
+    "finding_summary": "Comparing Apple Watch Series 6 HRV to a 3-lead ECG reference in 78 adults, found near-perfect agreement (MAPE ~1.15%) for beat-to-beat measures during rest, with agreement declining somewhat during activity."
+  },
+  {
+    "id": "holloszy_1967_mitochondrial_adaptations",
+    "topic_tags": ["zone2_training", "mitochondrial_adaptation"],
+    "title": "Biochemical Adaptations in Muscle: Effects of Exercise on Mitochondrial Oxygen Uptake and Respiratory Enzyme Activity in Skeletal Muscle",
+    "authors": "Holloszy, J.O.",
+    "year": 1967,
+    "journal": "Journal of Biological Chemistry",
+    "doi_or_url": "10.1016/S0021-9258(18)96046-1",
+    "finding_summary": "Classic study showing endurance training roughly doubled mitochondrial capacity to oxidize pyruvate and doubled several respiratory enzyme activities in rat skeletal muscle, founding the field of exercise-induced mitochondrial biogenesis."
+  },
+  {
+    "id": "bishop_2019_mitochondrial_biogenesis",
+    "topic_tags": ["zone2_training", "mitochondrial_adaptation"],
+    "title": "High-Intensity Exercise and Mitochondrial Biogenesis: Current Controversies and Future Research Directions",
+    "authors": "Bishop, D.J., Botella, J., Genders, A.J., et al.",
+    "year": 2019,
+    "journal": "Physiology",
+    "doi_or_url": "10.1152/physiol.00038.2018",
+    "finding_summary": "Reviews the debate over whether high-intensity or high-volume/low-intensity training better promotes mitochondrial biogenesis, concluding no clear consensus yet exists due to methodological limitations across studies."
+  },
+  {
+    "id": "seiler_2010_training_intensity_distribution",
+    "topic_tags": ["zone2_training", "training_load"],
+    "title": "What is Best Practice for Training Intensity and Duration Distribution in Endurance Athletes?",
+    "authors": "Seiler, S.",
+    "year": 2010,
+    "journal": "International Journal of Sports Physiology and Performance",
+    "doi_or_url": "https://pubmed.ncbi.nlm.nih.gov/20861519/",
+    "finding_summary": "Reviews evidence that elite endurance athletes typically spend ~80% of training at low intensity ('polarized training') and ~20% at high intensity, and that shifting further toward high-intensity work does not clearly improve long-term performance."
+  },
+  {
+    "id": "macinnis_gibala_2017_interval_training_intensity",
+    "topic_tags": ["zone2_training", "mitochondrial_adaptation"],
+    "title": "Physiological Adaptations to Interval Training and the Role of Exercise Intensity",
+    "authors": "MacInnis, M.J. & Gibala, M.J.",
+    "year": 2017,
+    "journal": "The Journal of Physiology",
+    "doi_or_url": "10.1113/JP273196",
+    "finding_summary": "Review concluding exercise intensity is a key mediator of mitochondrial biogenesis signaling, but total training volume and duration (not intensity alone) also matter greatly for aerobic and mitochondrial adaptations."
+  }
+]

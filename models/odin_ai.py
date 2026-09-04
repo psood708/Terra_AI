@@ -11,6 +11,8 @@ from typing import Dict, Any, List, Optional, Tuple
 from data.terra_schemas import UnifiedHealthProfile
 from config import PERSONAS
 from models.anomaly_detector import score_today
+from models.citation_retriever import retrieve_citations
+from prompts.odin_prompts import PROMPT_VERSION, build_system_instruction
 
 
 SCIENTIFIC_CITATIONS = {
@@ -471,25 +473,27 @@ class OdinAIEngine:
 
         anomalies_str = "; ".join([f"{a['metric']}: {a['message']}" for a in anomalies]) or "None detected"
 
-        system_instruction = (
-            f"You are OdinAI, Terra's elite Health & Exercise Physiology Intelligence Engine. "
-            f"You are directly analyzing real-time continuous wearable and CGM telemetry for {cfg['name']}.\n\n"
-            f"Target Goal: {cfg['target_goal']}\n"
-            f"Objective: {cfg['objective']}\n\n"
-            f"Current Biometric Telemetry:\n"
-            f"- Recovery Score: {recovery['recovery_score']}/100 ({recovery['status']})\n"
-            f"- Overnight HRV: {profile.sleep.avg_hrv_rmssd_ms} ms (Baseline: {cfg['baseline']['hrv_baseline']} ms, z-score: {recovery['biometric_breakdown']['hrv_z_score']})\n"
-            f"- Resting Heart Rate: {profile.daily.resting_heart_rate_bpm} bpm\n"
-            f"- Sleep Architecture: Total {profile.sleep.duration_asleep_seconds/3600:.1f}h, Deep Sleep {recovery['biometric_breakdown']['deep_sleep_pct']}%, REM {recovery['biometric_breakdown']['rem_sleep_pct']}%, Efficiency {profile.sleep.sleep_efficiency_pct}%\n"
-            f"- Continuous Glucose (CGM): Mean {avg_g} mg/dL, Peak {max_g} mg/dL, Time-in-Range (70-140 mg/dL): {tir}%\n"
-            f"- Active Biometric Alerts: {anomalies_str}\n"
-            f"- Prescribed Adaptive Workout: {workout['prescribed_plan']['workout_title']}\n\n"
-            f"Instructions:\n"
-            f"1. Directly address the user's specific inquiry using their real physiological metrics above.\n"
-            f"2. Provide empathetic, scientifically rigorous coaching advice.\n"
-            f"3. Cite relevant peer-reviewed exercise physiology or clinical literature (e.g., Buchheit on HRV, Walker on sleep, San Millán on Zone 2, Battelino on CGM TIR).\n"
-            f"4. Format cleanly using concise paragraphs and markdown bolding."
-        )
+        prompt_context = {
+            "name": cfg["name"],
+            "target_goal": cfg["target_goal"],
+            "objective": cfg["objective"],
+            "recovery_score": recovery["recovery_score"],
+            "recovery_status": recovery["status"],
+            "hrv": profile.sleep.avg_hrv_rmssd_ms,
+            "hrv_baseline": cfg["baseline"]["hrv_baseline"],
+            "hrv_z_score": recovery["biometric_breakdown"]["hrv_z_score"],
+            "resting_hr": profile.daily.resting_heart_rate_bpm,
+            "sleep_hours": profile.sleep.duration_asleep_seconds / 3600.0,
+            "deep_sleep_pct": recovery["biometric_breakdown"]["deep_sleep_pct"],
+            "rem_sleep_pct": recovery["biometric_breakdown"]["rem_sleep_pct"],
+            "sleep_efficiency_pct": profile.sleep.sleep_efficiency_pct,
+            "avg_glucose": avg_g,
+            "peak_glucose": max_g,
+            "tir": tir,
+            "anomalies_str": anomalies_str,
+            "workout_title": workout["prescribed_plan"]["workout_title"],
+        }
+        system_instruction = build_system_instruction(prompt_context)
 
         try:
             async with httpx.AsyncClient(timeout=25.0) as client:
@@ -599,6 +603,12 @@ class OdinAIEngine:
             provider=provider
         )
 
+        # Retrieval-augmented citation lookup (see models/citation_retriever.py)
+        # over the full ~40-entry corpus, replacing what used to be a fixed
+        # pair of citations regardless of what was actually asked.
+        retrieved = await retrieve_citations(query_text, top_k=2, hf_api_key=api_key if provider == "huggingface" else None)
+        query_citations = [c.to_response_dict() for c in retrieved] or [self.citations["hrv_guided_training"]]
+
         if live_llm_response:
             return {
                 "query": query_text,
@@ -607,10 +617,11 @@ class OdinAIEngine:
                 "is_live_ai": True,
                 "provider": provider,
                 "model_name": used_model,
+                "prompt_version": PROMPT_VERSION,
                 "recovery_synthesis": recovery,
                 "active_anomalies": anomalies,
                 "recommended_workout": workout["prescribed_plan"],
-                "scientific_citations": [self.citations["hrv_guided_training"], self.citations["zone2_metabolism"]]
+                "scientific_citations": query_citations
             }
 
         # Fallback to Built-in Physiological Reasoning Engine
@@ -622,7 +633,6 @@ class OdinAIEngine:
                 f"z-score: {recovery['biometric_breakdown']['hrv_z_score']}). "
                 f"Resting heart rate was recorded at **{profile.daily.resting_heart_rate_bpm} bpm**."
             )
-            citations = [self.citations["hrv_guided_training"], self.citations["sleep_architecture"]]
 
         elif any(w in query_lower for w in ["glucose", "sugar", "cgm", "diet", "meal", "food", "carb"]):
             cgm = profile.body.cgm_readings_24h or []
@@ -638,7 +648,6 @@ class OdinAIEngine:
                 f"To buffer post-prandial spikes, consider a 10-15 min light Zone 1 walk immediately following meals, "
                 f"which activates non-insulin GLUT-4 translocation."
             )
-            citations = [self.citations["glucose_variability"]]
 
         elif any(w in query_lower for w in ["workout", "train", "exercise", "run", "gym", "lift", "hiit", "plan"]):
             plan = workout["prescribed_plan"]
@@ -648,7 +657,6 @@ class OdinAIEngine:
                 f"• **Main Set**: {plan['main_set']}\n"
                 f"• **Physiological Rationale**: {plan['rationale']}"
             )
-            citations = [self.citations["zone2_metabolism"], self.citations["acwr_workload"]]
 
         elif any(w in query_lower for w in ["longevity", "120", "biological age", "lifespan", "aging"]):
             bio_age = cfg["baseline"]["biological_age"]
@@ -661,7 +669,6 @@ class OdinAIEngine:
                 f"The primary longevity drivers in your telemetry are high HRV resilience (+{recovery['biometric_breakdown']['hrv_z_score']} SD), "
                 f"sustained Zone 2 mitochondrial stimulus, and deep slow-wave sleep efficiency ({profile.sleep.sleep_efficiency_pct}%)."
             )
-            citations = [self.citations["zone2_metabolism"], self.citations["sleep_architecture"]]
 
         else:
             response_text = (
@@ -670,7 +677,6 @@ class OdinAIEngine:
                 f"Your daily steps stand at **{profile.daily.steps:,}**, sleep score is **{profile.sleep.sleep_score}/100**, "
                 f"and resting HR is **{profile.daily.resting_heart_rate_bpm} bpm**."
             )
-            citations = [self.citations["hrv_guided_training"]]
 
         return {
             "query": query_text,
@@ -678,9 +684,10 @@ class OdinAIEngine:
             "odin_response": response_text,
             "is_live_ai": False,
             "provider": "physiological_heuristics",
+            "prompt_version": PROMPT_VERSION,
             "llm_error": llm_error,
             "recovery_synthesis": recovery,
             "active_anomalies": anomalies,
             "recommended_workout": workout["prescribed_plan"],
-            "scientific_citations": citations
+            "scientific_citations": query_citations
         }
