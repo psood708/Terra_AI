@@ -3,9 +3,11 @@ Test Suite for Terra Intelligence Engine (TIE).
 Verifies all API routes, OdinAI reasoning, Graph API, Trajectory & Retention models.
 """
 
+import json
 import pytest
 from fastapi.testclient import TestClient
 from main import app
+from security.terra_signature import sign_terra_payload
 
 client = TestClient(app)
 
@@ -135,22 +137,54 @@ def test_rewards_and_streak():
     assert claim_data["new_streak_days"] == 11
 
 
-def test_webhook_ingestion():
-    """Verify Terra webhook simulation endpoint."""
-    webhook_payload = {
-        "event_id": "evt_test_9999",
-        "event_type": "daily",
-        "user_id": "terra_usr_alex",
-        "timestamp": "2026-09-03T12:00:00Z",
-        "data": {
-            "steps": 10450,
-            "resting_hr": 52,
-            "active_calories": 580.0
-        }
+TERRA_TEST_WEBHOOK_PAYLOAD = {
+    "event_id": "evt_test_9999",
+    "event_type": "daily",
+    "user_id": "terra_usr_alex",
+    "timestamp": "2026-09-03T12:00:00Z",
+    "data": {
+        "steps": 10450,
+        "resting_hr": 52,
+        "active_calories": 580.0
     }
-    res = client.post("/api/webhooks/terra", json=webhook_payload)
+}
+
+
+def test_webhook_ingestion_no_secret_configured(monkeypatch):
+    """With no TERRA_SIGNING_SECRET set, signature verification is skipped (dev mode)."""
+    monkeypatch.delenv("TERRA_SIGNING_SECRET", raising=False)
+    res = client.post("/api/webhooks/terra", json=TERRA_TEST_WEBHOOK_PAYLOAD)
     assert res.status_code == 200
     assert res.json()["status"] == "success"
+
+
+def test_webhook_ingestion_valid_signature(monkeypatch):
+    """A correctly HMAC-signed request is accepted when a signing secret is configured."""
+    monkeypatch.setenv("TERRA_SIGNING_SECRET", "test_terra_signing_secret")
+    raw_body = json.dumps(TERRA_TEST_WEBHOOK_PAYLOAD).encode("utf-8")
+    signature = sign_terra_payload(raw_body, "test_terra_signing_secret")
+
+    res = client.post(
+        "/api/webhooks/terra",
+        content=raw_body,
+        headers={"content-type": "application/json", "terra-signature": signature},
+    )
+    assert res.status_code == 200
+    assert res.json()["status"] == "success"
+
+
+def test_webhook_ingestion_invalid_signature(monkeypatch):
+    """A bad/forged signature is rejected with 401 when a signing secret is configured."""
+    monkeypatch.setenv("TERRA_SIGNING_SECRET", "test_terra_signing_secret")
+    raw_body = json.dumps(TERRA_TEST_WEBHOOK_PAYLOAD).encode("utf-8")
+    forged_signature = sign_terra_payload(raw_body, "wrong_secret")
+
+    res = client.post(
+        "/api/webhooks/terra",
+        content=raw_body,
+        headers={"content-type": "application/json", "terra-signature": forged_signature},
+    )
+    assert res.status_code == 401
 
 
 def test_odin_query_with_api_params():

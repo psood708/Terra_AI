@@ -1,6 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  // Standalone output for a minimal production Docker image (see frontend/Dockerfile)
+  output: 'standalone',
   // Allow the Next.js dev server to proxy API calls to the FastAPI backend
   async rewrites() {
     return [
