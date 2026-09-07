@@ -45,7 +45,7 @@ export function OverviewTab({ recovery, workout, agp, bioAge, onAskOdin }: Props
           value={recovery?.recovery_score ?? '--'}
           unit="/ 100"
           sub={recovery?.status ?? 'Calculating...'}
-          color="text-emerald-400"
+          color="text-emerald-400 light:text-emerald-700"
           Icon={HeartPulse}
         />
         <StatCard
@@ -53,7 +53,7 @@ export function OverviewTab({ recovery, workout, agp, bioAge, onAskOdin }: Props
           value={bb?.current_hrv_rmssd ?? '--'}
           unit="ms"
           sub={bb ? `z-score: ${bb.hrv_z_score > 0 ? '+' : ''}${bb.hrv_z_score}` : undefined}
-          color="text-cyan-400"
+          color="text-cyan-400 light:text-cyan-700"
           Icon={Activity}
         />
         <StatCard
@@ -61,7 +61,7 @@ export function OverviewTab({ recovery, workout, agp, bioAge, onAskOdin }: Props
           value={bb ? Math.round(bb.sleep_efficiency_pct) : '--'}
           unit="%"
           sub={bb ? `Deep: ${bb.deep_sleep_pct}% of sleep` : undefined}
-          color="text-indigo-400"
+          color="text-indigo-400 light:text-indigo-700"
           Icon={Moon}
         />
         <StatCard
@@ -69,7 +69,7 @@ export function OverviewTab({ recovery, workout, agp, bioAge, onAskOdin }: Props
           value={bioAge?.biological_age ?? '--'}
           unit="yrs"
           sub={bioAge ? `${bioAge.biological_age_delta_years} yrs decelerated` : undefined}
-          color="text-teal-400"
+          color="text-teal-400 light:text-teal-700"
           Icon={Hourglass}
         />
       </div>
@@ -81,13 +81,13 @@ export function OverviewTab({ recovery, workout, agp, bioAge, onAskOdin }: Props
           <div className="flex items-center justify-between mb-3">
             <div>
               <h3 className="text-sm font-semibold flex items-center gap-2">
-                <span className="text-amber-400">⚡</span>
+                <span className="text-amber-400 light:text-amber-700">⚡</span>
                 Continuous Glucose Profile (CGM 24h)
               </h3>
               <p className="text-[11px]" style={{ color: 'var(--text-muted)' }}>Target Range 70–140 mg/dL • Terra Graph API</p>
             </div>
             {agp && (
-              <span className="text-xs font-semibold px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20">
+              <span className="text-xs font-semibold px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 light:text-amber-800 border border-amber-500/20">
                 TIR: {agp.agp_metrics.time_in_range_pct}%
               </span>
             )}
@@ -101,11 +101,11 @@ export function OverviewTab({ recovery, workout, agp, bioAge, onAskOdin }: Props
         <div className="rounded-2xl p-5 flex flex-col justify-between" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-[11px] uppercase tracking-wider text-cyan-400 font-semibold flex items-center gap-1.5">
+              <span className="text-[11px] uppercase tracking-wider text-cyan-400 light:text-cyan-700 font-semibold flex items-center gap-1.5">
                 <PersonStanding className="w-3.5 h-3.5" /> Today&apos;s Prescription
               </span>
               {plan && (
-                <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 light:text-cyan-800 border border-cyan-500/20">
                   Strain {plan.target_strain}
                 </span>
               )}
@@ -120,7 +120,7 @@ export function OverviewTab({ recovery, workout, agp, bioAge, onAskOdin }: Props
             </div>
           </div>
           <div className="pt-4 mt-4 flex items-center justify-between" style={{ borderTop: '1px solid var(--border)' }}>
-            <button onClick={onAskOdin} className="text-xs text-emerald-400 hover:text-emerald-300 font-medium flex items-center gap-1">
+            <button onClick={onAskOdin} className="text-xs text-emerald-400 light:text-emerald-700 hover:text-emerald-300 light:hover:text-emerald-800 font-medium flex items-center gap-1">
               Ask OdinAI for workout tweaks →
             </button>
           </div>

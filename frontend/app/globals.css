@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Lets components write `light:text-emerald-700` etc. to override an
+   accent-color shade tuned for the dark background whenever `.light` is
+   active — mirrors Tailwind's own `dark:` class-variant mechanism. */
+@custom-variant light (&:where(.light, .light *));
+
 :root {
   --bg-page: #080b14;
   --bg-card: #0e1320;

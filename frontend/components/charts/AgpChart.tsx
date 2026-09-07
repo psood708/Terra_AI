@@ -29,7 +29,7 @@ export function AgpChart({ data, compact }: Props) {
         <XAxis dataKey="time" tick={{ fontSize: 10, fill: tick }} />
         <YAxis domain={[50, 220]} tick={{ fontSize: 10, fill: tick }} />
         <Tooltip
-          contentStyle={{ background: isDark ? '#0e1320' : '#fff', border: '1px solid #1a2234', borderRadius: 8, fontSize: 11 }}
+          contentStyle={{ background: isDark ? '#0e1320' : '#fff', border: isDark ? '1px solid #1a2234' : '1px solid #e2e8f0', borderRadius: 8, fontSize: 11 }}
           formatter={(v) => [`${v} mg/dL`, 'Glucose']}
           labelFormatter={(l) => l}
         />

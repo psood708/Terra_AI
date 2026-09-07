@@ -48,12 +48,52 @@ SCIENTIFIC_CITATIONS = {
     }
 }
 
-# Supported free models on Hugging Face Serverless Router
+# Chat-completion models used as the static fallback/priority order when live
+# discovery (see _discover_live_hf_models) is unavailable. Which models any
+# given provider actually serves changes over time — this list has already
+# gone stale twice (Mistral-7B-Instruct-v0.3, then Llama-3.2-3B-Instruct, both
+# stopped being served by any router provider) — so it's ordered by what
+# Hugging Face's own current onboarding docs use as their flagship "this
+# definitely works" walkthrough examples, not by guesswork.
 HF_MODELS = [
-    "meta-llama/Llama-3.2-3B-Instruct",
-    "Qwen/Qwen2.5-72B-Instruct",
-    "mistralai/Mistral-7B-Instruct-v0.3"
+    "openai/gpt-oss-120b",
+    "openai/gpt-oss-20b",
+    "Qwen/Qwen2.5-7B-Instruct",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "deepseek-ai/DeepSeek-R1",
 ]
+
+
+async def _discover_live_hf_models(client: httpx.AsyncClient, key: str) -> List[str]:
+    """Ask the router itself which models are currently live for this token,
+    instead of trusting a hardcoded guess that can silently go stale as
+    providers add/drop models. Returns [] on any failure so callers can fall
+    back to the static HF_MODELS list unchanged."""
+    try:
+        resp = await client.get(
+            "https://router.huggingface.co/v1/models",
+            headers={"Authorization": f"Bearer {key}"},
+            timeout=8.0,
+        )
+        if resp.status_code != 200:
+            return []
+        return [m["id"] for m in resp.json().get("data", []) if isinstance(m, dict) and m.get("id")]
+    except Exception:
+        return []
+
+
+def _prioritized_hf_models(live_ids: List[str], preferred: Optional[str] = None) -> List[str]:
+    """Order candidates to try: the cached/preferred model first if it's
+    confirmed live, then the rest of HF_MODELS filtered to confirmed-live
+    ones, then any untested HF_MODELS entries as a last resort (unchanged
+    behavior if discovery came back empty)."""
+    live_set = set(live_ids)
+    ordered = [m for m in HF_MODELS if not live_set or m in live_set]
+    if not ordered:
+        ordered = list(HF_MODELS)
+    if preferred and preferred in ordered:
+        ordered = [preferred] + [m for m in ordered if m != preferred]
+    return ordered
 
 # Strict whitelist of verified Gemini text models
 VERIFIED_GEMINI_TEXT_MODELS = [
@@ -78,7 +118,7 @@ class OdinAIEngine:
 
     def __init__(self):
         self.citations = SCIENTIFIC_CITATIONS
-        self.cached_hf_model: Optional[str] = "meta-llama/Llama-3.2-3B-Instruct"
+        self.cached_hf_model: Optional[str] = HF_MODELS[0]
         self.cached_gemini_model: Optional[str] = "gemini-3.6-flash"
 
     def analyze_recovery_status(self, profile: UnifiedHealthProfile) -> Dict[str, Any]:
@@ -316,13 +356,15 @@ class OdinAIEngine:
                 
                 # ---------------- 1. HUGGING FACE (RECOMMENDED) ----------------
                 if provider.lower() == "huggingface" or key.startswith("hf_"):
-                    url = "https://router.huggingface.co/hf-inference/v1/chat/completions"
+                    url = "https://router.huggingface.co/v1/chat/completions"
                     headers = {
                         "Authorization": f"Bearer {key}",
                         "Content-Type": "application/json"
                     }
+                    live_ids = await _discover_live_hf_models(client, key)
+                    candidates = _prioritized_hf_models(live_ids, self.cached_hf_model)
                     last_err = ""
-                    for hf_model in HF_MODELS:
+                    for hf_model in candidates:
                         payload = {
                             "model": hf_model,
                             "messages": [{"role": "user", "content": "Respond with 'ready'"}],
@@ -500,12 +542,13 @@ class OdinAIEngine:
                 
                 # ---------------- 1. HUGGING FACE ----------------
                 if provider.lower() == "huggingface" or key.startswith("hf_"):
-                    url = "https://router.huggingface.co/hf-inference/v1/chat/completions"
+                    url = "https://router.huggingface.co/v1/chat/completions"
                     headers = {
                         "Authorization": f"Bearer {key}",
                         "Content-Type": "application/json"
                     }
-                    models = [self.cached_hf_model or "meta-llama/Llama-3.2-3B-Instruct", "Qwen/Qwen2.5-72B-Instruct"]
+                    live_ids = await _discover_live_hf_models(client, key)
+                    models = _prioritized_hf_models(live_ids, self.cached_hf_model)
                     last_err = ""
                     for hf_model in models:
                         payload = {
@@ -654,8 +697,8 @@ class OdinAIEngine:
             response_text = (
                 f"Based on your physiological readiness ({recovery['recovery_score']}/100), OdinAI recommends: "
                 f"**{plan['workout_title']}** ({plan['duration_minutes']} min, target strain {plan['target_strain']}).\n\n"
-                f"• **Main Set**: {plan['main_set']}\n"
-                f"• **Physiological Rationale**: {plan['rationale']}"
+                f"- **Main Set**: {plan['main_set']}\n"
+                f"- **Physiological Rationale**: {plan['rationale']}"
             )
 
         elif any(w in query_lower for w in ["longevity", "120", "biological age", "lifespan", "aging"]):

@@ -8,6 +8,7 @@ Powers OdinAI reasoning, Terra Graph API visual telemetry,
 longitudinal bio-age forecasting, and behavioral retention optimization.
 """
 
+import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -47,10 +48,21 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# CORS Middleware
+# CORS Middleware. The frontend calls this API's absolute URL directly from
+# the browser (see frontend/lib/api.ts's API_BASE), not through a same-origin
+# proxy, so the deployed frontend's origin must be explicitly allow-listed
+# here via ALLOWED_ORIGINS (comma-separated) - wildcard "*" is rejected by
+# browsers whenever allow_credentials=True.
+_default_origins = "http://localhost:3000,http://127.0.0.1:3000"
+ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("ALLOWED_ORIGINS", _default_origins).split(",")
+    if origin.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -84,7 +84,7 @@ export function AiConfigModal({ open, onClose }: Props) {
         {/* Header */}
         <div className="flex items-center justify-between pb-3" style={{ borderBottom: '1px solid var(--border)' }}>
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 light:text-emerald-700 flex items-center justify-center">
               <Sparkles className="w-3.5 h-3.5" />
             </div>
             <div>
@@ -92,7 +92,7 @@ export function AiConfigModal({ open, onClose }: Props) {
               <p className="text-[10px]" style={{ color: 'var(--text-muted)' }}>Connect live LLM generative reasoning to OdinAI</p>
             </div>
           </div>
-          <button onClick={onClose} style={{ color: 'var(--text-muted)' }} className="hover:text-white transition"><X className="w-4 h-4" /></button>
+          <button onClick={onClose} style={{ color: 'var(--text-muted)' }} className="hover:text-[color:var(--text-primary)] transition"><X className="w-4 h-4" /></button>
         </div>
 
         {/* Fields */}
@@ -116,7 +116,7 @@ export function AiConfigModal({ open, onClose }: Props) {
             />
             {config.hintLink ? (
               <p className="text-[10px] mt-1" style={{ color: 'var(--text-muted)' }}>
-                {config.hint}<a href={config.hintLink} target="_blank" className="text-emerald-400 underline">{config.hintLink.replace('https://', '')}</a>. Powers Llama-3.2-3B-Instruct.
+                {config.hint}<a href={config.hintLink} target="_blank" className="text-emerald-400 light:text-emerald-700 underline">{config.hintLink.replace('https://', '')}</a>. Powers small open models (Qwen, Gemma, Llama) via the HF router.
               </p>
             ) : (
               <p className="text-[10px] mt-1" style={{ color: 'var(--text-muted)' }}>{config.hint}</p>
@@ -124,25 +124,25 @@ export function AiConfigModal({ open, onClose }: Props) {
           </div>
 
           <div className="rounded-xl p-3 text-[11px] leading-relaxed" style={{ background: 'var(--card-inner)', border: '1px solid var(--border)', color: 'var(--text-muted)' }}>
-            <strong className="text-emerald-400 block mb-1">ℹ️ How this works:</strong>
+            <strong className="text-emerald-400 light:text-emerald-700 block mb-1">ℹ️ How this works:</strong>
             When an API key is connected, OdinAI dynamically injects real-time biometric streams (HRV z-scores, CGM readings, sleep hypnogram stages) into the LLM system prompt.
           </div>
 
           {testStatus && (
             <div className={`text-[11px] rounded-lg p-2.5 ${
-              testStatus.type === 'success' ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'
+              testStatus.type === 'success' ? 'bg-emerald-500/10 text-emerald-300 light:text-emerald-800 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-300 light:text-rose-800 border border-rose-500/20'
             }`}>{testStatus.message}</div>
           )}
         </div>
 
         {/* Actions */}
         <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid var(--border)' }}>
-          <button onClick={handleClear} className="text-xs text-rose-400 hover:text-rose-300 transition flex items-center gap-1">
+          <button onClick={handleClear} className="text-xs text-rose-400 light:text-rose-700 hover:text-rose-300 light:hover:text-rose-800 transition flex items-center gap-1">
             <Trash2 className="w-3 h-3" /> Clear Key
           </button>
           <div className="flex items-center gap-2">
             <button onClick={handleTest} disabled={testing}
-              className="text-xs px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-cyan-300 border border-cyan-500/30 transition flex items-center gap-1 disabled:opacity-50">
+              className="text-xs px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 light:bg-slate-100 light:hover:bg-slate-200 text-cyan-300 light:text-cyan-700 border border-cyan-500/30 transition flex items-center gap-1 disabled:opacity-50">
               <Zap className="w-3 h-3" />{testing ? 'Testing...' : 'Test Connection'}
             </button>
             <button onClick={handleSave}

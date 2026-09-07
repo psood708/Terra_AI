@@ -6,11 +6,11 @@ import { useAppStore } from '@/store/appStore';
 import type { TabId, PersonaId } from '@/types/api';
 
 const TABS: { id: TabId; label: string; Icon: React.ElementType; color: string }[] = [
-  { id: 'overview', label: 'Overview', Icon: Gauge, color: 'text-emerald-400' },
-  { id: 'odin', label: 'OdinAI Studio', Icon: Brain, color: 'text-cyan-400' },
-  { id: 'graphs', label: 'Terra Graph API', Icon: ChartLine, color: 'text-amber-400' },
-  { id: 'longevity', label: 'Longevity Sim', Icon: Hourglass, color: 'text-teal-400' },
-  { id: 'habits', label: 'Habits & Cohorts', Icon: Trophy, color: 'text-indigo-400' },
+  { id: 'overview', label: 'Overview', Icon: Gauge, color: 'text-emerald-400 light:text-emerald-700' },
+  { id: 'odin', label: 'OdinAI Studio', Icon: Brain, color: 'text-cyan-400 light:text-cyan-700' },
+  { id: 'graphs', label: 'Terra Graph API', Icon: ChartLine, color: 'text-amber-400 light:text-amber-700' },
+  { id: 'longevity', label: 'Longevity Sim', Icon: Hourglass, color: 'text-teal-400 light:text-teal-700' },
+  { id: 'habits', label: 'Habits & Cohorts', Icon: Trophy, color: 'text-indigo-400 light:text-indigo-700' },
 ];
 
 const PERSONAS: { id: PersonaId; label: string }[] = [
@@ -51,20 +51,20 @@ export function Navbar({ onOpenAiModal, onStartTour, onRefresh }: NavbarProps) {
           </div>
           <div className="flex items-center space-x-2">
             <span className="text-base font-bold tracking-tight">TERRA</span>
-            <span className="text-[10px] uppercase px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold tracking-wider">AI Engine</span>
+            <span className="text-[10px] uppercase px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 light:text-emerald-700 border border-emerald-500/20 font-semibold tracking-wider">AI Engine</span>
           </div>
         </div>
 
         {/* Segmented Nav — desktop */}
         <nav id="tour-tabs" className="hidden md:flex items-center rounded-xl p-1 text-xs font-medium space-x-1"
-          style={{ background: 'rgba(17,24,39,0.9)', border: '1px solid var(--border-subtle)' }}>
+          style={{ background: 'var(--card-inner)', border: '1px solid var(--border-subtle)' }}>
           {TABS.map(({ id, label, Icon, color }) => (
             <button
               key={id}
               onClick={() => setSelectedTab(id)}
               className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
                 selectedTab === id
-                  ? 'bg-emerald-500/15 text-white'
+                  ? 'bg-emerald-500/15 text-white light:text-emerald-800'
                   : 'text-[color:var(--text-muted)] hover:text-[color:var(--text-primary)]'
               }`}
             >
@@ -111,7 +111,7 @@ export function Navbar({ onOpenAiModal, onStartTour, onRefresh }: NavbarProps) {
             className="h-9 px-2.5 rounded-lg transition flex items-center space-x-1.5"
             style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text-muted)' }}
           >
-            <Sparkles className="w-3 h-3 text-emerald-400" />
+            <Sparkles className="w-3 h-3 text-emerald-400 light:text-emerald-700" />
             <span className="text-xs hidden lg:inline">AI: {providerLabel}</span>
           </button>
 
@@ -120,7 +120,7 @@ export function Navbar({ onOpenAiModal, onStartTour, onRefresh }: NavbarProps) {
             className="h-9 px-2.5 rounded-lg transition flex items-center space-x-1.5"
             style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text-muted)' }}
           >
-            <Compass className="w-3 h-3 text-emerald-400" />
+            <Compass className="w-3 h-3 text-emerald-400 light:text-emerald-700" />
             <span className="text-xs hidden sm:inline">Tour</span>
           </button>
 
@@ -141,7 +141,7 @@ export function Navbar({ onOpenAiModal, onStartTour, onRefresh }: NavbarProps) {
         {TABS.map(({ id, label }) => (
           <button key={id} onClick={() => setSelectedTab(id)}
             className={`whitespace-nowrap px-3 py-1 rounded-md transition ${
-              selectedTab === id ? 'bg-emerald-500/15 text-emerald-400' : 'text-[color:var(--text-muted)]'
+              selectedTab === id ? 'bg-emerald-500/15 text-emerald-400 light:text-emerald-700' : 'text-[color:var(--text-muted)]'
             }`}>
             {label}
           </button>

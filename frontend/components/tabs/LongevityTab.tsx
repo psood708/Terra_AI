@@ -16,7 +16,7 @@ function Slider({ label, min, max, step, value, onChange, displayFn }: {
     <div>
       <div className="flex justify-between font-medium mb-1">
         <span className="text-xs" style={{ color: 'var(--text-sub)' }}>{label}</span>
-        <span className="text-xs text-emerald-400 font-bold">{displayFn(value)}</span>
+        <span className="text-xs text-emerald-400 light:text-emerald-700 font-bold">{displayFn(value)}</span>
       </div>
       <input
         type="range" min={min} max={max} step={step} value={value}
@@ -73,7 +73,7 @@ export function LongevityTab({ bioAge }: Props) {
             </p>
           </div>
           <div className="text-xs" style={{ color: 'var(--text-muted)' }}>
-            Chrono Age: <strong>{bioAge?.chronological_age ?? '--'}</strong> yrs • Current Bio-Age: <strong className="text-teal-400">{bioAge?.biological_age ?? '--'}</strong> yrs
+            Chrono Age: <strong>{bioAge?.chronological_age ?? '--'}</strong> yrs • Current Bio-Age: <strong className="text-teal-400 light:text-teal-700">{bioAge?.biological_age ?? '--'}</strong> yrs
           </div>
         </div>
 
@@ -88,14 +88,14 @@ export function LongevityTab({ bioAge }: Props) {
 
           {/* Result */}
           <div className="rounded-2xl p-6" style={{ background: 'linear-gradient(to bottom right, var(--card-inner), var(--bg-page))', border: '1px solid rgba(16,185,129,0.3)' }}>
-            <span className="text-[10px] uppercase tracking-wider text-emerald-400 font-semibold mb-2 flex items-center gap-1.5">
+            <span className="text-[10px] uppercase tracking-wider text-emerald-400 light:text-emerald-700 font-semibold mb-2 flex items-center gap-1.5">
               ✨ Counterfactual Simulation Result
             </span>
             <div className="flex items-baseline space-x-3 my-3">
               <span className="text-4xl font-black">{loading ? '...' : (outcome?.projected_biological_age ?? '--')}</span>
               <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Projected Bio-Age</span>
               {outcome && (
-                <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 light:text-emerald-800 border border-emerald-500/30">
                   -{outcome.net_biological_years_saved} yrs saved
                 </span>
               )}
@@ -107,15 +107,15 @@ export function LongevityTab({ bioAge }: Props) {
               <div className="grid grid-cols-3 gap-2 mt-4 text-center text-xs">
                 <div className="rounded-lg p-2" style={{ background: 'var(--card-inner)', border: '1px solid var(--border)' }}>
                   <span className="text-[10px] block" style={{ color: 'var(--text-muted)' }}>HRV Boost</span>
-                  <strong className="text-cyan-400">+{outcome.projected_hrv_improvement_ms} ms</strong>
+                  <strong className="text-cyan-400 light:text-cyan-700">+{outcome.projected_hrv_improvement_ms} ms</strong>
                 </div>
                 <div className="rounded-lg p-2" style={{ background: 'var(--card-inner)', border: '1px solid var(--border)' }}>
                   <span className="text-[10px] block" style={{ color: 'var(--text-muted)' }}>VO2 Max Gain</span>
-                  <strong className="text-emerald-400">+{outcome.projected_vo2_max_gain} ml/kg</strong>
+                  <strong className="text-emerald-400 light:text-emerald-700">+{outcome.projected_vo2_max_gain} ml/kg</strong>
                 </div>
                 <div className="rounded-lg p-2" style={{ background: 'var(--card-inner)', border: '1px solid var(--border)' }}>
                   <span className="text-[10px] block" style={{ color: 'var(--text-muted)' }}>Resting HR Drop</span>
-                  <strong className="text-indigo-400">-{outcome.projected_rhr_reduction_bpm} bpm</strong>
+                  <strong className="text-indigo-400 light:text-indigo-700">-{outcome.projected_rhr_reduction_bpm} bpm</strong>
                 </div>
               </div>
             )}

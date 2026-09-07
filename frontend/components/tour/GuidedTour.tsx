@@ -182,10 +182,10 @@ export function GuidedTour({ isActive, onClose, onSwitchTab }: TourProps) {
 
         {/* Step indicator */}
         <div className="flex items-center justify-between text-[11px] pb-2" style={{ borderBottom: '1px solid var(--border)', color: 'var(--text-muted)' }}>
-          <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
+          <span className="flex items-center gap-1.5 text-emerald-400 light:text-emerald-700 font-semibold">
             <Compass className="w-3 h-3" /> Step {step + 1} of {TOUR_STEPS.length}
           </span>
-          <button onClick={onClose} className="flex items-center gap-0.5 hover:text-white transition font-medium">
+          <button onClick={onClose} className="flex items-center gap-0.5 hover:text-[color:var(--text-primary)] transition font-medium">
             Skip Tour <X className="w-3 h-3" />
           </button>
         </div>
@@ -207,7 +207,7 @@ export function GuidedTour({ isActive, onClose, onSwitchTab }: TourProps) {
           <div className="flex items-center gap-1">
             {TOUR_STEPS.map((_, i) => (
               <span key={i} className={`rounded-full transition-all ${
-                i === step ? 'w-4 h-1.5 bg-emerald-400' : 'w-1.5 h-1.5 bg-gray-700'
+                i === step ? 'w-4 h-1.5 bg-emerald-400 light:bg-emerald-600' : 'w-1.5 h-1.5 bg-gray-700 light:bg-gray-300'
               }`} />
             ))}
           </div>

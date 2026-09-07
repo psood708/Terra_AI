@@ -37,24 +37,24 @@ export function HabitsTab() {
             <p className="text-[11px]" style={{ color: 'var(--text-muted)' }}>RL-based micro-incentives sustaining Day-30 and Day-90 engagement</p>
           </div>
           <button onClick={handleClaimStreak}
-            className="text-xs px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 rounded-lg transition font-semibold flex items-center gap-1">
+            className="text-xs px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 light:text-amber-800 border border-amber-500/30 rounded-lg transition font-semibold flex items-center gap-1">
             🔥 Claim Streak
           </button>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
           {[{
-            label: 'Active Streak', value: rewards?.streak_days ?? '--', unit: 'Days', sub: rewards ? `${rewards.streak_multiplier}x Multiplier` : '', subColor: 'text-emerald-400',
+            label: 'Active Streak', value: rewards?.streak_days ?? '--', unit: 'Days', sub: rewards ? `${rewards.streak_multiplier}x Multiplier` : '', subColor: 'text-emerald-400 light:text-emerald-700',
           }, {
             label: 'Daily Points', value: rewards?.daily_points_earned ?? '--', unit: 'pts', sub: rewards ? `${rewards.achieved_habits_count} habits met` : '', subColor: 'text-[color:var(--text-muted)]',
           }, {
-            label: 'Retention Index', value: rewards ? Math.round(ra!.retention_index_score) : '--', unit: '/ 100', sub: ra?.churn_risk_level ?? '', subColor: 'text-emerald-400',
+            label: 'Retention Index', value: rewards ? Math.round(ra!.retention_index_score) : '--', unit: '/ 100', sub: ra?.churn_risk_level ?? '', subColor: 'text-emerald-400 light:text-emerald-700',
           }, {
             label: 'Best Nudge Window', value: ra?.best_notification_window ?? '--', unit: '', sub: ra?.recommended_nudge_strategy ?? '', subColor: 'text-[color:var(--text-muted)]',
           }].map((item, i) => (
             <div key={i} className="rounded-xl p-3" style={{ background: 'var(--card-inner)', border: '1px solid var(--border)' }}>
               <span className="text-[10px] block" style={{ color: 'var(--text-muted)' }}>{item.label}</span>
               <div className="flex items-baseline space-x-1 mt-0.5">
-                <span className="text-xl font-bold text-amber-400">{item.value}</span>
+                <span className="text-xl font-bold text-amber-400 light:text-amber-700">{item.value}</span>
                 {item.unit && <span style={{ color: 'var(--text-muted)' }}>{item.unit}</span>}
               </div>
               {item.sub && <span className={`text-[10px] ${item.subColor} block`}>{item.sub}</span>}
@@ -81,7 +81,7 @@ export function HabitsTab() {
                     {impact.direction === 'positive' ? '↗️' : '↘️'} {impact.behavior}
                   </span>
                   <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold ${
-                    impact.direction === 'positive' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'
+                    impact.direction === 'positive' ? 'bg-emerald-500/10 text-emerald-400 light:text-emerald-700' : 'bg-rose-500/10 text-rose-400 light:text-rose-700'
                   }`}>{impact.net_impact_score > 0 ? '+' : ''}{impact.net_impact_score} net</span>
                 </div>
                 <div className="text-[11px]" style={{ color: 'var(--text-sub)' }}>
@@ -104,14 +104,14 @@ export function HabitsTab() {
                 <div>
                   <div className="flex items-center gap-2">
                     <h5 className="font-semibold">{twin.name}</h5>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400">{twin.target_goal}</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 light:text-indigo-700">{twin.target_goal}</span>
                   </div>
                   <div className="text-[10px] mt-1 space-x-2" style={{ color: 'var(--text-muted)' }}>
                     {twin.shared_traits.map((t, j) => <span key={j}>• {t}</span>)}
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="text-base font-black text-indigo-400">{twin.similarity_score_pct}%</span>
+                  <span className="text-base font-black text-indigo-400 light:text-indigo-700">{twin.similarity_score_pct}%</span>
                   <span className="text-[9px] block" style={{ color: 'var(--text-muted)' }}>Cosine Match</span>
                 </div>
               </div>
