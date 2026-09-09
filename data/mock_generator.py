@@ -6,7 +6,7 @@ Generates multimodal wearable streams: CGM glucose, sleep hypnograms, HRV, activ
 import math
 import random
 from datetime import datetime, timedelta
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 from data.terra_schemas import (
     TerraDailyPayload,
