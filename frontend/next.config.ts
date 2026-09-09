@@ -1,6 +1,13 @@
+import path from 'path';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  // This Next.js app lives in a subdirectory (frontend/) of the larger
+  // Terra_API repo, not at the repo root - Next's file tracer otherwise
+  // treats `frontend/` itself as the tracing root and can misbehave on
+  // platforms (like Vercel) that check out the whole repo. Point it at the
+  // actual repo root explicitly. https://nextjs.org/docs/.../output#caveats
+  outputFileTracingRoot: path.join(__dirname, '..'),
   // Standalone output is for the self-hosted frontend/Dockerfile path only.
   // Vercel has its own build/file-tracing pipeline and conflicts with it
   // (fails with "ENOENT ... next-server.js.nft.json"), so skip it there —
