@@ -29,7 +29,8 @@ export function CorrelationChart({ data }: Props) {
         <YAxis yAxisId="hrv" orientation="left" tick={{ fontSize: 10, fill: '#10b981' }} label={{ value: 'HRV ms', angle: -90, position: 'insideLeft', fontSize: 9, fill: '#10b981' }} />
         <YAxis yAxisId="sleep" orientation="right" tick={{ fontSize: 10, fill: '#6366f1' }} />
         <Tooltip
-          contentStyle={{ background: isDark ? '#0e1320' : '#fff', border: isDark ? '1px solid #1a2234' : '1px solid #e2e8f0', borderRadius: 8, fontSize: 11 }}
+          contentStyle={{ background: isDark ? '#0e1320' : '#fff', border: isDark ? '1px solid #1a2234' : '1px solid #e2e8f0', borderRadius: 8, fontSize: 11, color: isDark ? '#cbd5e1' : '#334155' }}
+          itemStyle={{ color: isDark ? '#cbd5e1' : '#334155' }}
         />
         <Legend wrapperStyle={{ fontSize: 11, color: isDark ? '#cbd5e1' : '#334155' }} iconSize={10} />
         <Line yAxisId="hrv" type="monotone" dataKey="hrv" name="HRV (ms)" stroke="#10b981" strokeWidth={2} dot={false} />
