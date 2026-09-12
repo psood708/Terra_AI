@@ -1,0 +1,23 @@
+# Render Blueprint for the Terra Intelligence Engine backend.
+# Deploy: Render dashboard -> New -> Blueprint -> select this repo.
+# Render reads this file automatically and provisions the service below.
+services:
+  - type: web
+    name: terra-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /
+    envVars:
+      # Comma-separated list of origins allowed to call this API from a browser.
+      # Update this to match the deployed frontend's actual origin.
+      - key: ALLOWED_ORIGINS
+        value: https://terra-ai-one.vercel.app
+      - key: HUGGINGFACE_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: TERRA_SIGNING_SECRET
+        sync: false
