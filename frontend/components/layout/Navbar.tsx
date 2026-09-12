@@ -3,6 +3,7 @@ import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { Dna, Gauge, Brain, ChartLine, Hourglass, Trophy, Sparkles, Compass, Code, Sun, Moon, ChevronDown, RefreshCw } from 'lucide-react';
 import { useAppStore } from '@/store/appStore';
+import { API_BASE } from '@/lib/api';
 import type { TabId, PersonaId } from '@/types/api';
 
 const TABS: { id: TabId; label: string; Icon: React.ElementType; color: string }[] = [
@@ -125,7 +126,7 @@ export function Navbar({ onOpenAiModal, onStartTour, onRefresh }: NavbarProps) {
           </button>
 
           {/* Swagger */}
-          <a href="http://localhost:8000/docs" target="_blank"
+          <a href={`${API_BASE}/docs`} target="_blank"
             className="h-9 w-9 rounded-lg transition flex items-center justify-center"
             style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text-muted)' }}
             title="OpenAPI Docs"

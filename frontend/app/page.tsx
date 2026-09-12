@@ -14,7 +14,7 @@ import { GuidedTour } from '@/components/tour/GuidedTour';
 
 export default function DashboardPage() {
   const { selectedTab, setSelectedTab, currentPersona, hasSeenTour, setHasSeenTour } = useAppStore();
-  const { persona, recovery, anomalies, workout, agp, hypnogram, correlation, bioAge, loading, refresh } = useDashboard(currentPersona);
+  const { persona, recovery, anomalies, workout, agp, hypnogram, correlation, bioAge, loading, error, refresh } = useDashboard(currentPersona);
 
   const [aiModalOpen, setAiModalOpen] = useState(false);
   const [tourActive, setTourActive] = useState(false);
@@ -56,6 +56,16 @@ export default function DashboardPage() {
         {loading && selectedTab === 'overview' && (
           <div className="flex items-center justify-center h-40" style={{ color: 'var(--text-muted)' }}>
             <div className="text-sm animate-pulse">Loading live biometric telemetry...</div>
+          </div>
+        )}
+
+        {error && !loading && (
+          <div className="rounded-lg p-4 text-sm space-y-2" style={{ background: 'var(--bg-card)', border: '1px solid rgb(239 68 68 / 0.4)', color: 'var(--text)' }}>
+            <p className="font-medium text-red-400">Couldn&apos;t load biometric telemetry from the API.</p>
+            <p style={{ color: 'var(--text-muted)' }}>{error}</p>
+            <button onClick={refresh} className="text-xs underline" style={{ color: 'var(--text-muted)' }}>
+              Retry
+            </button>
           </div>
         )}
 
